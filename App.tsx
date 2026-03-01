@@ -401,6 +401,16 @@ const App: React.FC = () => {
               }
             />
           );
+        } else if (id === 'nyc-mission') {
+          content = (
+            <ProjectInformationLayout 
+              title="48 Hours, 115 Strangers, and One Billionaire Founder: Leading the Sneex NYC Guerilla Research Mission" 
+              subtitle="Hand-picked by Sara Blakely to lead a team of 5 in a 48-hour trip to NYC through real-world consumer feedback."
+              thumbnail="https://i.imgur.com/yAOeIiF.png"
+              description={`- Conducted 115 cold-approach interviews on the streets of NYC, managing team logistics, morale, and data integrity under a 2-day deadline.\n\n- Interviewed high-profile targets including Nicole Scherzinger (Lead singer of The Pussycat Dolls) and 2 professional WNBA players, proving the product's appeal to elite athletes and global icons.\n\n- Served as the Lead Director and Editor, distilling ~20 hours of raw street footage into a high-energy narrative and analyzing qualitative data to provide actionable product insights.`}
+              videoUrl="https://i.imgur.com/Itcd7qH.mp4"
+            />
+          );
         } else if (id === 'event-planner') {
           content = <EventPlannerBinder />;
         } else if (id === 'love') {
@@ -416,7 +426,7 @@ const App: React.FC = () => {
       let winWidth = 640;
       let winHeight = 540;
 
-      if (id === 'ramowka') {
+      if (id === 'ramowka' || id === 'nyc-mission') {
         winWidth = window.innerWidth * 0.47;
         winHeight = window.innerHeight * 0.92;
       } else if (id === 'sneex-editorial') {
