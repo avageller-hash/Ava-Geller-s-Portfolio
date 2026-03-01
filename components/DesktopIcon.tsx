@@ -81,6 +81,7 @@ const DesktopIcon: React.FC<DesktopIconProps> = ({
       dragMomentum={false}
       onDragEnd={handleDragEnd}
       onMouseDown={onFocus}
+      onTap={handleLaunch}
       
       // Animation & State
       initial={false}
