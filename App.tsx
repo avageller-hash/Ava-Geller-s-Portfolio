@@ -557,27 +557,26 @@ const App: React.FC = () => {
       <div className="fixed inset-0 bg-white/40 pointer-events-none z-[1]" />
       
       <div className="absolute inset-0 z-[10] pointer-events-none">
-        <div className="absolute inset-0 z-[30]">
+        <div className="absolute inset-0 z-[30] pointer-events-none">
           {DESKTOP_ICONS.map((icon) => (
-            <div key={icon.id} className="pointer-events-auto">
-              <DesktopIcon
-                title={icon.title}
-                iconSrc={icon.iconSrc}
-                x={icon.x}
-                y={icon.y}
-                orientation={icon.orientation}
-                type={icon.type}
-                isProminent={icon.isProminent}
-                onClick={() => handleOpenDesktopFile(icon.id, icon.title)}
-                onFocus={() => handleFocusWindow(icon.id)}
-                zIndex={30}
-                containerRef={desktopRef}
-              />
-            </div>
+            <DesktopIcon
+              key={icon.id}
+              title={icon.title}
+              iconSrc={icon.iconSrc}
+              x={icon.x}
+              y={icon.y}
+              orientation={icon.orientation}
+              type={icon.type}
+              isProminent={icon.isProminent}
+              onClick={() => handleOpenDesktopFile(icon.id, icon.title)}
+              onFocus={() => handleFocusWindow(icon.id)}
+              zIndex={30}
+              containerRef={desktopRef}
+            />
           ))}
         </div>
 
-        <div className="absolute inset-0 z-[40]">
+        <div className="absolute inset-0 z-[40] pointer-events-none">
           <AnimatePresence>
             {openWindows.map((win) => (
               <div key={win.id} className="pointer-events-auto">
