@@ -29,10 +29,10 @@ export const entryAnimation = {
  * Including one folder icon 'PROJEKTY' for a realistic desktop feel.
  */
 export const DESKTOP_ICONS: DesktopIconData[] = [
-  { id: 'ramowka', title: 'SNEEX CAMPAIGN', iconSrc: 'https://i.imgur.com/ao97oFf.jpeg', x: 24, y: 33, orientation: 'vertical', type: 'file', isProminent: true },
-  { id: 'sneex-editorial', title: 'Sneex Editorial', iconSrc: 'https://i.imgur.com/zjtRYmQ.jpeg', x: 24, y: 48, orientation: 'vertical', type: 'file' },
-  { id: 'love', title: 'STYLE BUNDLES BUSINESS', iconSrc: 'https://i.imgur.com/AzV3OrU.png', x: 42, y: 32, orientation: 'horizontal', type: 'file' },
-  { id: 'projekty', title: 'Creative video editing', iconSrc: '', x: 58, y: 38, type: 'folder' },
-  { id: 'event-planner', title: 'Ava the Event Planner', iconSrc: 'https://i.imgur.com/2wICCyn.jpeg', x: 52, y: 58, orientation: 'vertical', type: 'file' },
-  { id: 'szept', title: 'THE 04 BRAND', iconSrc: 'https://i.imgur.com/pcfc0Mh.jpeg', x: 35, y: 58, orientation: 'horizontal', type: 'file' },
+  { id: 'ramowka', title: 'SNEEX CAMPAIGN', iconSrc: 'https://i.imgur.com/ao97oFf.jpeg', x: 32, y: 34, orientation: 'vertical', type: 'file', isProminent: true },
+  { id: 'sneex-editorial', title: 'Sneex Editorial', iconSrc: 'https://i.imgur.com/zjtRYmQ.jpeg', x: 51, y: 36, orientation: 'vertical', type: 'file' },
+  { id: 'love', title: 'STYLE BUNDLES BUSINESS', iconSrc: 'https://i.imgur.com/AzV3OrU.png', x: 70, y: 33, orientation: 'horizontal', type: 'file' },
+  { id: 'projekty', title: 'Creative video editing', iconSrc: '', x: 29, y: 62, type: 'folder' },
+  { id: 'event-planner', title: 'Ava the Event Planner', iconSrc: 'https://i.imgur.com/2wICCyn.jpeg', x: 48, y: 59, orientation: 'vertical', type: 'file' },
+  { id: 'szept', title: 'THE 04 BRAND', iconSrc: 'https://i.imgur.com/pcfc0Mh.jpeg', x: 69, y: 64, orientation: 'horizontal', type: 'file' },
 ];
