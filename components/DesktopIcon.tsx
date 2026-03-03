@@ -12,7 +12,7 @@ interface DesktopIconProps {
   orientation?: 'vertical' | 'horizontal';
   type?: 'file' | 'folder';
   isProminent?: boolean;
-  onClick: () => void;
+  onClick: (startX: number, startY: number) => void;
   onFocus?: () => void;
   onDragEnd?: (id: string, newX: number, newY: number) => void;
   zIndex?: number;
@@ -48,7 +48,7 @@ const DesktopIcon: React.FC<DesktopIconProps> = ({
   isDimmed = false
 }) => {
   const handleLaunch = () => {
-    onClick();
+    onClick(x, y);
   };
 
   const handleDragEnd = (event: any, info: any) => {

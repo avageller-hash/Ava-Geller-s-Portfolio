@@ -7,11 +7,16 @@ export interface WindowData {
   type: 'project' | 'about' | 'contact' | 'media' | 'folder' | 'app';
   content: React.ReactNode;
   iconSrc?: string;
-  initialX?: number;
-  initialY?: number;
+  startX?: number;
+  startY?: number;
+  width?: number | string;
+  height?: number | string;
   zIndex?: number;
   aspectRatio?: number;
   overflowVisible?: boolean;
+  maxHeight?: string;
+  style?: React.CSSProperties;
+  noScroll?: boolean;
 }
 
 export interface DesktopIconData {

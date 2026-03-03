@@ -241,8 +241,6 @@ const Dock: React.FC<DockProps> = ({ onOpen, openIds }) => {
     { id: 'divider-2', type: 'divider' },
     { id: 'linkedin', title: 'LinkedIn', icon: <LinkedInIcon /> },
     { id: 'mail', title: 'Mail', icon: <MailIcon /> },
-    { id: 'divider-3', type: 'divider' },
-    { id: 'trash', title: 'bin of stuff', icon: <TrashIcon /> },
   ];
 
   return (

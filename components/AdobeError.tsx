@@ -5,11 +5,11 @@ interface AdobeErrorProps {
   onClose: () => void;
   onFocus?: () => void;
   zIndex: number;
-  initialX?: number;
-  initialY?: number;
+  startX?: number;
+  startY?: number;
 }
 
-const AdobeError: React.FC<AdobeErrorProps> = ({ onClose, onFocus, zIndex, initialX = 100, initialY = 100 }) => {
+const AdobeError: React.FC<AdobeErrorProps> = ({ onClose, onFocus, zIndex, startX, startY }) => {
   const baseWidth = 260;
   const baseHeight = 125;
   const [size, setSize] = useState({ width: baseWidth, height: baseHeight });
@@ -18,19 +18,43 @@ const AdobeError: React.FC<AdobeErrorProps> = ({ onClose, onFocus, zIndex, initi
     return size.width / baseWidth;
   }, [size.width]);
 
+  // Animation variants
+  const variants = {
+    initial: {
+      opacity: 0,
+      scale: 0.2,
+      x: startX !== undefined ? startX - (window.innerWidth / 2) : 0,
+      y: startY !== undefined ? startY - (window.innerHeight / 2) : 0,
+    },
+    animate: {
+      opacity: 1,
+      scale: 1,
+      x: 0,
+      y: 0,
+    },
+    exit: {
+      opacity: 0,
+      scale: 0.5,
+      transition: { duration: 0.2 }
+    }
+  };
+
   return (
     <motion.div
+      variants={variants}
+      initial="initial"
+      animate="animate"
+      exit="exit"
       drag
       dragMomentum={false}
-      initial={{ scale: 0.9, opacity: 0 }}
-      animate={{ scale: 1, opacity: 1 }}
-      exit={{ scale: 0.9, opacity: 0 }}
       onMouseDown={onFocus}
       transition={{ type: "spring", stiffness: 400, damping: 25 }}
       style={{ 
         zIndex, 
-        left: initialX, 
-        top: initialY, 
+        left: '50%',
+        top: '50%',
+        translateX: '-50%',
+        translateY: '-50%',
         width: size.width,
         height: size.height,
         position: 'absolute' 

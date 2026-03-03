@@ -1,6 +1,6 @@
 import React, { useState, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Volume2, VolumeX, Play } from 'lucide-react';
+import { Volume2, VolumeX, Play, ChevronDown, ChevronUp } from 'lucide-react';
 
 const VideoItem: React.FC<{ src: string; autoPlay?: boolean }> = ({ src, autoPlay = false }) => {
   const [isMuted, setIsMuted] = useState(true);
@@ -29,7 +29,7 @@ const VideoItem: React.FC<{ src: string; autoPlay?: boolean }> = ({ src, autoPla
   return (
     <div 
       onClick={togglePlay}
-      className="flex-shrink-0 w-48 aspect-[9/16] bg-black rounded-lg overflow-hidden shadow-lg transition-transform hover:scale-[1.02] duration-500 relative group cursor-pointer"
+      className="aspect-[9/16] bg-black rounded-xl overflow-hidden shadow-lg transition-transform hover:scale-[1.02] duration-500 relative group cursor-pointer border border-black/5"
     >
       <video 
         ref={videoRef}
@@ -42,14 +42,14 @@ const VideoItem: React.FC<{ src: string; autoPlay?: boolean }> = ({ src, autoPla
       />
       {!isPlaying && (
         <div className="absolute inset-0 flex items-center justify-center bg-black/20 transition-opacity group-hover:bg-black/30">
-           <Play size={32} className="text-white opacity-80" fill="currentColor" />
+           <Play size={48} className="text-white opacity-80" fill="currentColor" />
         </div>
       )}
       <button 
         onClick={toggleMute}
-        className="absolute bottom-3 right-3 p-2 bg-black/40 backdrop-blur-md rounded-full text-white opacity-0 group-hover:opacity-100 transition-opacity hover:bg-black/60"
+        className="absolute bottom-4 right-4 p-2 bg-black/40 backdrop-blur-md rounded-full text-white opacity-0 group-hover:opacity-100 transition-opacity hover:bg-black/60"
       >
-        {isMuted ? <VolumeX size={14} /> : <Volume2 size={14} />}
+        {isMuted ? <VolumeX size={16} /> : <Volume2 size={16} />}
       </button>
     </div>
   );
@@ -57,19 +57,6 @@ const VideoItem: React.FC<{ src: string; autoPlay?: boolean }> = ({ src, autoPla
 
 const StyleBundlesWindow = () => {
   const [activeTab, setActiveTab] = useState<'home' | 'gallery'>('home');
-  const constraintsRef = useRef(null);
-
-  const navItems = [
-    { id: 'home', label: 'Home' },
-    { id: 'gallery', label: 'The Gallery' },
-  ];
-
-  // Placeholder variables for media
-  const processVideo = "https://i.imgur.com/2CHxWWF.mp4";
-
-  const step1Img1 = "https://static.wixstatic.com/media/028ad6_3b19b73efd2f451da797020d19003d71~mv2.jpeg/v1/fill/w_404,h_720,al_c,lg_1,q_80,enc_avif,quality_auto/028ad6_3b19b73efd2f451da797020d19003d71~mv2.jpeg";
-  const step1Img2 = "https://static.wixstatic.com/media/028ad6_5962d7a048f842d8b7b28ef290907d77~mv2.jpg/v1/fill/w_404,h_720,al_c,lg_1,q_80,enc_avif,quality_auto/028ad6_5962d7a048f842d8b7b28ef290907d77~mv2.jpg";
-  const step2Img = "https://static.wixstatic.com/media/028ad6_cf11b3450e254e128791c2d6bb373fb5~mv2.png/v1/fill/w_332,h_720,al_c,lg_1,q_85,enc_avif,quality_auto/028ad6_cf11b3450e254e128791c2d6bb373fb5~mv2.png";
 
   const galleryImages = [
     "https://static.wixstatic.com/media/028ad6_4bcd68e7ca534fd88ca3f395a83cfd90~mv2.png/v1/crop/x_0,y_368,w_2811,h_3388/fill/w_718,h_864,al_c,q_90,usm_0.66_1.00_0.01,enc_avif,quality_auto/028ad6_4bcd68e7ca534fd88ca3f395a83cfd90~mv2.png",
@@ -91,22 +78,25 @@ const StyleBundlesWindow = () => {
   ];
 
   return (
-    <div className="flex flex-col h-full bg-[#FAF9F6] text-[#1D1D1F] font-sans overflow-hidden">
-      {/* Sub-navigation Bar */}
-      <nav className="flex-shrink-0 h-10 border-b border-black/10 flex items-center justify-center gap-6 bg-[#FAF9F6] z-10">
-        {navItems.map((item) => (
+    <div className="flex flex-col bg-white/80 backdrop-blur-xl text-[#1d1d1f] font-sans h-full overflow-hidden">
+      {/* Global Sub-navigation Bar */}
+      <nav className="flex-shrink-0 h-14 border-b border-black/10 flex items-center justify-center gap-12 bg-transparent z-10">
+        {[
+          { id: 'home', label: 'Home' },
+          { id: 'gallery', label: 'The Gallery' },
+        ].map((item) => (
           <button
             key={item.id}
             onClick={() => setActiveTab(item.id as any)}
-            className={`text-[10px] uppercase tracking-[0.15em] font-semibold transition-all relative py-1 ${
-              activeTab === item.id ? 'text-[#1D1D1F]' : 'text-[#1D1D1F]/40 hover:text-[#1D1D1F]/70'
+            className={`text-[13px] uppercase tracking-[0.15em] font-semibold transition-all relative py-1 ${
+              activeTab === item.id ? 'text-[#1d1d1f]' : 'text-[#1d1d1f]/30 hover:text-[#1d1d1f]/60'
             }`}
           >
             {item.label}
             {activeTab === item.id && (
               <motion.div
-                layoutId="activeTab"
-                className="absolute bottom-0 left-0 right-0 h-[1.5px] bg-[#1D1D1F]"
+                layoutId="activeTabStyle"
+                className="absolute bottom-0 left-0 right-0 h-[2px] bg-[#1d1d1f]"
               />
             )}
           </button>
@@ -114,131 +104,98 @@ const StyleBundlesWindow = () => {
       </nav>
 
       {/* Content Area */}
-      <div className="flex-1 overflow-y-auto scroll-window">
+      <div className="flex-1 overflow-hidden">
         <AnimatePresence mode="wait">
           {activeTab === 'home' ? (
             <motion.div
-              key="home"
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -10 }}
-              transition={{ duration: 0.4, ease: [0.23, 1, 0.32, 1] }}
-              className="p-6 max-w-3xl mx-auto space-y-8"
+              key="home-layout"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.4 }}
+              className="flex flex-row h-full"
             >
-              {/* Business Description */}
-              <section className="space-y-3">
-                <h1 className="text-[9px] uppercase tracking-[0.15em] font-bold opacity-40">About my second business:</h1>
-                <p className="text-[14px] font-sans leading-relaxed text-black/90 tracking-tight">
-                  The "Style Bundles" concept owes its creation to the freedom online school granted me during Covid; thrifting became my escape from Zoom. I advertised my packages of thrifted clothing custom-tailored to each client's preferences, transforming my passion into a side hustle. With a focus on quality and personalization, I successfully delivered over 100 tailored bundles in just one year.
-                </p>
-                
-                <div className="pt-1 space-y-1">
-                  <div className="flex items-center gap-1.5 py-0.5">
-                    <svg className="w-2 h-2 text-gray-400 rotate-90" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={4}>
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
-                    </svg>
-                    <span className="text-[14px] font-semibold text-black/80">Details:</span>
-                  </div>
-                  <p className="text-[14px] text-black/50 font-normal pl-3.5">
-                    2023, $7,500 revenue in 1 year
-                  </p>
-                </div>
-              </section>
-
-              <div className="h-[1px] bg-black/5 w-full" />
-
-              <div className="space-y-6">
-                <p className="text-[15px] font-serif italic opacity-80">Here is how it would work...</p>
-
-                {/* Step 1 */}
-                <section className="space-y-4">
-                  <div className="flex items-baseline gap-2.5">
-                    <span className="text-[20px] font-serif italic opacity-20">01</span>
-                    <h2 className="text-[16px] font-serif italic tracking-tight">Choose your package</h2>
-                  </div>
-                  <p className="text-[13px] font-light opacity-60 ml-8">Micro or Large?</p>
-                  <div className="grid grid-cols-2 gap-3 ml-8">
-                    <div className="aspect-[9/16] bg-gray-100 overflow-hidden shadow-sm rounded-lg">
-                      <img src={step1Img1} className="w-full h-full object-cover" alt="Micro Package" />
+              {/* Left Column: Context (55%) */}
+              <div className="w-[55%] h-full overflow-y-auto overscroll-contain scroll-window p-12 border-r border-black/10">
+                <motion.div
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ duration: 0.5, delay: 0.1 }}
+                  className="space-y-12"
+                >
+                  {/* Business Description */}
+                  <section className="space-y-6">
+                    <h1 className="text-[14px] uppercase tracking-[0.2em] font-bold text-[#6e6e73]">About my second business:</h1>
+                    <p className="text-[18px] font-normal leading-[1.6] text-[#1d1d1f] tracking-tight w-full">
+                      The "Style Bundles" concept owes its creation to the freedom online school granted me during Covid; thrifting became my escape from Zoom. I advertised my <span className="font-bold">packages of thrifted clothing</span> custom-tailored to each client's preferences, transforming my passion into a side hustle. With a focus on quality and personalization, I successfully delivered over 100 tailored bundles in just one year.
+                    </p>
+                    
+                    {/* Details Section (Always Open) */}
+                    <div className="pt-2 border-t border-black/5">
+                      <div className="flex items-center gap-2 py-2">
+                        <span className="text-[16px] font-bold text-[#1d1d1f] uppercase tracking-wider">Details</span>
+                      </div>
+                      <div className="overflow-hidden">
+                        <ul className="pl-6 py-2 space-y-2">
+                          <li className="text-[16px] text-[#6e6e73] flex items-center gap-3">
+                            <div className="w-1.5 h-1.5 rounded-full bg-black/20" />
+                            Launched in 2023
+                          </li>
+                          <li className="text-[16px] text-[#6e6e73] flex items-center gap-3">
+                            <div className="w-1.5 h-1.5 rounded-full bg-black/20" />
+                            <span className="font-bold">$7,500 revenue in 1 year</span>
+                          </li>
+                          <li className="text-[16px] text-[#6e6e73] flex items-center gap-3">
+                            <div className="w-1.5 h-1.5 rounded-full bg-black/20" />
+                            100+ unique bundles delivered
+                          </li>
+                        </ul>
+                      </div>
                     </div>
-                    <div className="aspect-[9/16] bg-gray-100 overflow-hidden shadow-sm rounded-lg">
-                      <img src={step1Img2} className="w-full h-full object-cover" alt="Large Package" />
-                    </div>
-                  </div>
-                </section>
-
-                <div className="h-[1px] bg-black/5 w-full" />
-
-                {/* Step 2 */}
-                <section className="space-y-4">
-                  <div className="flex items-baseline gap-2.5">
-                    <span className="text-[20px] font-serif italic opacity-20">02</span>
-                    <h2 className="text-[16px] font-serif italic tracking-tight">Fill out customization form</h2>
-                  </div>
-                  <div className="max-w-[180px] ml-8">
-                    <div className="aspect-[9/16] bg-gray-100 overflow-hidden shadow-sm rounded-lg">
-                      <img src={step2Img} className="w-full h-full object-cover" alt="Customization Form" />
-                    </div>
-                  </div>
-                </section>
-
-                <div className="h-[1px] bg-black/5 w-full" />
-
-                {/* Step 3 */}
-                <section className="space-y-4">
-                  <div className="flex items-baseline gap-2.5">
-                    <span className="text-[20px] font-serif italic opacity-20">03</span>
-                    <h2 className="text-[16px] font-serif italic tracking-tight">Receive your bundle!</h2>
-                  </div>
-                </section>
+                  </section>
+                </motion.div>
               </div>
 
-              {/* Rotating Video Gallery */}
-              <section className="pt-4 space-y-4">
-                <div className="flex items-center justify-between px-1">
-                  <h3 className="text-[9px] uppercase tracking-[0.15em] font-bold opacity-40">Recent Curations</h3>
-                  <div className="flex items-center gap-1.5 opacity-20">
-                    <span className="text-[8px] uppercase tracking-widest font-bold">Drag to explore</span>
-                    <svg width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
-                      <path d="M5 12h14M12 5l7 7-7 7"/>
-                    </svg>
-                  </div>
-                </div>
-                
-                <div ref={constraintsRef} className="relative -mx-6 px-6 overflow-hidden pb-4">
-                  <motion.div 
-                    drag="x"
-                    dragConstraints={constraintsRef}
-                    className="flex gap-4 w-max pr-6 cursor-grab active:cursor-grabbing"
-                  >
-                    {galleryVideos.map((vid, i) => (
-                      <VideoItem key={i} src={vid} autoPlay={i === 0} />
-                    ))}
-                  </motion.div>
-                </div>
-              </section>
-              
-              <div className="h-20" />
+              {/* Right Column: Proof (45%) */}
+              <div className="w-[45%] h-full overflow-y-auto overscroll-contain scroll-window p-12 pl-[60px]">
+                <motion.div
+                  initial={{ opacity: 0, x: 20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ duration: 0.5, delay: 0.2 }}
+                  className="grid grid-cols-2 gap-6"
+                >
+                  {galleryVideos.map((vid, i) => (
+                    <VideoItem key={i} src={vid} autoPlay={i === 0} />
+                  ))}
+                </motion.div>
+              </div>
             </motion.div>
           ) : (
             <motion.div
-              key="gallery"
-              initial={{ opacity: 0, y: 10 }}
+              key="gallery-layout"
+              initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -10 }}
-              transition={{ duration: 0.4, ease: [0.23, 1, 0.32, 1] }}
-              className="p-6"
+              exit={{ opacity: 0, y: 20 }}
+              transition={{ duration: 0.5 }}
+              className="h-full overflow-y-auto overscroll-contain scroll-window p-12"
             >
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-3 gap-8">
                 {galleryImages.map((img, i) => (
-                  <div key={i} className="space-y-2">
-                    <div className="aspect-[4/5] bg-gray-100 overflow-hidden shadow-md rounded-md">
-                      <img src={img} className="w-full h-full object-cover hover:scale-105 transition-transform duration-700" alt={`Bundle ${i + 1}`} />
+                  <div key={i} className="group space-y-3">
+                    <div className="aspect-[4/5] bg-gray-100 overflow-hidden shadow-md rounded-xl border border-black/5">
+                      <img 
+                        src={img} 
+                        className="w-full h-full object-cover transition-all duration-700 group-hover:scale-105 group-hover:-translate-y-1" 
+                        alt={`Bundle ${i + 1}`} 
+                        referrerPolicy="no-referrer"
+                      />
                     </div>
-                    <p className="font-serif italic text-[11px] opacity-60">Curated Set {i + 1}</p>
+                    <p className="font-mono text-[10px] uppercase tracking-widest text-[#6e6e73] opacity-60 text-center">Curated Set {i + 1}</p>
                   </div>
                 ))}
               </div>
+              {/* Extra spacing at bottom */}
+              <div className="h-12" />
             </motion.div>
           )}
         </AnimatePresence>

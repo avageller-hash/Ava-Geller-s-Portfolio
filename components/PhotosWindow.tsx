@@ -5,11 +5,11 @@ interface PhotosWindowProps {
   onClose: () => void;
   onFocus?: () => void;
   zIndex: number;
-  initialX?: number;
-  initialY?: number;
+  startX?: number;
+  startY?: number;
 }
 
-const PhotosWindow: React.FC<PhotosWindowProps> = ({ onClose, onFocus, zIndex, initialX = 50, initialY = 50 }) => {
+const PhotosWindow: React.FC<PhotosWindowProps> = ({ onClose, onFocus, zIndex, startX, startY }) => {
   const baseWidth = 500;
   const baseHeight = 600;
   const [size, setSize] = useState({ width: baseWidth, height: baseHeight });
@@ -39,19 +39,43 @@ const PhotosWindow: React.FC<PhotosWindowProps> = ({ onClose, onFocus, zIndex, i
     { type: 'image', src: 'https://i.imgur.com/1Y6CVDD.jpeg' }, // Swapped from 3rd row left (formerly index 4)
   ];
 
+  // Animation variants
+  const variants = {
+    initial: {
+      opacity: 0,
+      scale: 0.2,
+      x: startX !== undefined ? startX - (window.innerWidth / 2) : 0,
+      y: startY !== undefined ? startY - (window.innerHeight / 2) : 0,
+    },
+    animate: {
+      opacity: 1,
+      scale: 1,
+      x: 0,
+      y: 0,
+    },
+    exit: {
+      opacity: 0,
+      scale: 0.5,
+      transition: { duration: 0.2 }
+    }
+  };
+
   return (
     <motion.div
+      variants={variants}
+      initial="initial"
+      animate="animate"
+      exit="exit"
       drag
       dragMomentum={false}
-      initial={{ scale: 0.95, opacity: 0 }}
-      animate={{ scale: 1, opacity: 1 }}
-      exit={{ scale: 0.95, opacity: 0 }}
       onMouseDown={onFocus}
       transition={{ type: "spring", stiffness: 300, damping: 30 }}
       style={{ 
         zIndex, 
-        left: initialX, 
-        top: initialY, 
+        left: '50%',
+        top: '50%',
+        translateX: '-50%',
+        translateY: '-50%',
         width: size.width,
         height: size.height,
         position: 'absolute' 
@@ -87,7 +111,7 @@ const PhotosWindow: React.FC<PhotosWindowProps> = ({ onClose, onFocus, zIndex, i
           {media.map((item, idx) => (
             <div key={idx} className="aspect-square bg-white rounded-lg shadow-sm border border-black/5 overflow-hidden flex items-center justify-center">
               {item.type === 'image' ? (
-                <img src={item.src} className="w-full h-full object-cover" loading="lazy" />
+                <img src={item.src} className="w-full h-full object-cover" loading="lazy" referrerPolicy="no-referrer" />
               ) : (
                 <video 
                   src={item.src} 
@@ -102,22 +126,6 @@ const PhotosWindow: React.FC<PhotosWindowProps> = ({ onClose, onFocus, zIndex, i
           ))}
         </div>
       </div>
-
-      {/* Resize Handle */}
-      <motion.div
-        drag
-        dragMomentum={false}
-        onDrag={(e, info) => {
-          setSize(prev => ({
-            width: Math.max(300, prev.width + info.delta.x),
-            height: Math.max(300, prev.height + info.delta.y)
-          }));
-        }}
-        onMouseDown={(e) => e.stopPropagation()}
-        className="absolute bottom-0 right-0 w-6 h-6 cursor-nwse-resize z-50 flex items-end justify-end p-1 group"
-      >
-        <div className="w-1.5 h-1.5 border-r-2 border-b-2 border-black/20 group-hover:border-black/40 transition-colors" />
-      </motion.div>
     </motion.div>
   );
 };

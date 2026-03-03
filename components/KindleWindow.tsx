@@ -7,8 +7,8 @@ interface KindleWindowProps {
   onClose: () => void;
   onFocus?: () => void;
   zIndex: number;
-  initialX?: number;
-  initialY?: number;
+  startX?: number;
+  startY?: number;
 }
 
 const BookCover = ({ title, author, badge, progress, image, scale = 1, contain = false }: { title: string, author?: string, badge?: string, progress?: string, image?: string, scale?: number, contain?: boolean }) => (
@@ -24,6 +24,7 @@ const BookCover = ({ title, author, badge, progress, image, scale = 1, contain =
             target.style.display = 'none';
             target.parentElement!.classList.add('bg-gray-100');
           }}
+          referrerPolicy="no-referrer"
         />
       ) : (
         <div className="w-full h-full flex flex-col p-2 justify-center items-center text-center bg-gray-50">
@@ -73,7 +74,7 @@ const BookCover = ({ title, author, badge, progress, image, scale = 1, contain =
   </div>
 );
 
-const KindleWindow: React.FC<KindleWindowProps> = ({ onClose, onFocus, zIndex, initialX = 100, initialY = 50 }) => {
+const KindleWindow: React.FC<KindleWindowProps> = ({ onClose, onFocus, zIndex, startX, startY }) => {
   const baseWidth = 440;
   const baseHeight = 620;
   const [size, setSize] = useState({ width: baseWidth, height: baseHeight });
@@ -82,19 +83,43 @@ const KindleWindow: React.FC<KindleWindowProps> = ({ onClose, onFocus, zIndex, i
     return size.width / baseWidth;
   }, [size.width]);
 
+  // Animation variants
+  const variants = {
+    initial: {
+      opacity: 0,
+      scale: 0.2,
+      x: startX !== undefined ? startX - (window.innerWidth / 2) : 0,
+      y: startY !== undefined ? startY - (window.innerHeight / 2) : 0,
+    },
+    animate: {
+      opacity: 1,
+      scale: 1,
+      x: 0,
+      y: 0,
+    },
+    exit: {
+      opacity: 0,
+      scale: 0.5,
+      transition: { duration: 0.2 }
+    }
+  };
+
   return (
     <motion.div
+      variants={variants}
+      initial="initial"
+      animate="animate"
+      exit="exit"
       drag
       dragMomentum={false}
-      initial={{ scale: 0.9, opacity: 0, y: 20 }}
-      animate={{ scale: 1, opacity: 1, y: 0 }}
-      exit={{ scale: 0.9, opacity: 0, y: 20 }}
       onMouseDown={onFocus}
       transition={{ type: "spring", stiffness: 300, damping: 30 }}
       style={{ 
         zIndex, 
-        left: initialX, 
-        top: initialY, 
+        left: '50%',
+        top: '50%',
+        translateX: '-50%',
+        translateY: '-50%',
         width: size.width, 
         height: size.height,
         position: 'absolute' 
@@ -252,20 +277,6 @@ const KindleWindow: React.FC<KindleWindowProps> = ({ onClose, onFocus, zIndex, i
             alt="kindle logo"
           />
         </div>
-
-        {/* Resize Handle */}
-        <motion.div
-          drag
-          dragMomentum={false}
-          onDrag={(e, info) => {
-            setSize(prev => ({
-              width: Math.max(300, prev.width + info.delta.x),
-              height: Math.max(400, prev.height + info.delta.y)
-            }));
-          }}
-          onMouseDown={(e) => e.stopPropagation()}
-          className="absolute bottom-0 right-0 w-12 h-12 cursor-nwse-resize z-50 rounded-br-[44px]"
-        />
       </div>
     </motion.div>
   );

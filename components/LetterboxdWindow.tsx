@@ -6,11 +6,11 @@ interface LetterboxdWindowProps {
   onClose: () => void;
   onFocus?: () => void;
   zIndex: number;
-  initialX?: number;
-  initialY?: number;
+  startX?: number;
+  startY?: number;
 }
 
-const LetterboxdWindow: React.FC<LetterboxdWindowProps> = ({ onClose, onFocus, zIndex, initialX = 150, initialY = 150 }) => {
+const LetterboxdWindow: React.FC<LetterboxdWindowProps> = ({ onClose, onFocus, zIndex, startX, startY }) => {
   const baseWidth = 420;
   const baseHeight = 260;
   const [size, setSize] = useState({ width: baseWidth, height: baseHeight });
@@ -19,19 +19,43 @@ const LetterboxdWindow: React.FC<LetterboxdWindowProps> = ({ onClose, onFocus, z
     return size.width / baseWidth;
   }, [size.width]);
 
+  // Animation variants
+  const variants = {
+    initial: {
+      opacity: 0,
+      scale: 0.2,
+      x: startX !== undefined ? startX - (window.innerWidth / 2) : 0,
+      y: startY !== undefined ? startY - (window.innerHeight / 2) : 0,
+    },
+    animate: {
+      opacity: 1,
+      scale: 1,
+      x: 0,
+      y: 0,
+    },
+    exit: {
+      opacity: 0,
+      scale: 0.5,
+      transition: { duration: 0.2 }
+    }
+  };
+
   return (
     <motion.div
+      variants={variants}
+      initial="initial"
+      animate="animate"
+      exit="exit"
       drag
       dragMomentum={false}
-      initial={{ scale: 0.95, opacity: 0 }}
-      animate={{ scale: 1, opacity: 1 }}
-      exit={{ scale: 0.95, opacity: 0 }}
       onMouseDown={onFocus}
       transition={{ type: "spring", stiffness: 300, damping: 30 }}
       style={{ 
         zIndex, 
-        left: initialX, 
-        top: initialY, 
+        left: '50%',
+        top: '50%',
+        translateX: '-50%',
+        translateY: '-50%',
         width: size.width,
         height: size.height,
         position: 'absolute' 
@@ -66,22 +90,6 @@ const LetterboxdWindow: React.FC<LetterboxdWindowProps> = ({ onClose, onFocus, z
           />
         </div>
       </div>
-
-      {/* Resize Handle */}
-      <motion.div
-        drag
-        dragMomentum={false}
-        onDrag={(e, info) => {
-          setSize(prev => ({
-            width: Math.max(200, prev.width + info.delta.x),
-            height: Math.max(100, prev.height + info.delta.y)
-          }));
-        }}
-        onMouseDown={(e) => e.stopPropagation()}
-        className="absolute bottom-0 right-0 w-6 h-6 cursor-nwse-resize z-50 flex items-end justify-end p-1 group"
-      >
-        <div className="w-1.5 h-1.5 border-r-2 border-b-2 border-white/10 group-hover:border-white/30 transition-colors" />
-      </motion.div>
     </motion.div>
   );
 };

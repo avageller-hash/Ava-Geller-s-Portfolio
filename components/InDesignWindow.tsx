@@ -6,11 +6,11 @@ interface InDesignWindowProps {
   onClose: () => void;
   onFocus?: () => void;
   zIndex: number;
-  initialX?: number;
-  initialY?: number;
+  startX?: number;
+  startY?: number;
 }
 
-const InDesignWindow: React.FC<InDesignWindowProps> = ({ onClose, onFocus, zIndex, initialX = 100, initialY = 100 }) => {
+const InDesignWindow: React.FC<InDesignWindowProps> = ({ onClose, onFocus, zIndex, startX, startY }) => {
   const [currentSpread, setCurrentSpread] = useState(0);
   const [isAutoFlipping, setIsAutoFlipping] = useState(false);
   // Reduced default size from 1200x800 to 900x650
@@ -54,15 +54,42 @@ const InDesignWindow: React.FC<InDesignWindowProps> = ({ onClose, onFocus, zInde
   const isCover = !spreads[currentSpread].left;
   const isBack = !spreads[currentSpread].right;
 
+  // Animation variants
+  const variants = {
+    initial: {
+      opacity: 0,
+      scale: 0.2,
+      x: startX !== undefined ? startX - (window.innerWidth / 2) : 0,
+      y: startY !== undefined ? startY - (window.innerHeight / 2) : 0,
+    },
+    animate: {
+      opacity: 1,
+      scale: 1,
+      x: 0,
+      y: 0,
+    },
+    exit: {
+      opacity: 0,
+      scale: 0.5,
+      transition: { duration: 0.2 }
+    }
+  };
+
   return (
     <motion.div
+      variants={variants}
+      initial="initial"
+      animate="animate"
+      exit="exit"
       drag
       dragMomentum={false}
       onMouseDown={onFocus}
       style={{ 
         zIndex, 
-        left: initialX, 
-        top: initialY, 
+        left: '50%',
+        top: '50%',
+        translateX: '-50%',
+        translateY: '-50%',
         width: containerSize.width,
         height: containerSize.height,
         position: 'absolute',
@@ -85,10 +112,6 @@ const InDesignWindow: React.FC<InDesignWindowProps> = ({ onClose, onFocus, zInde
           </div>
         </div>
         <div className="flex items-center gap-3">
-           {/* Added requested caption */}
-           <span className="text-[10px] text-gray-400 italic hidden lg:inline mr-2">
-             magazine i created based on my time studying abroad in paris
-           </span>
            <div className="px-1.5 py-0.5 rounded bg-black/20 border border-white/5 flex items-center">
              <span className="text-[9px] text-blue-400 font-bold uppercase tracking-tighter">GPU</span>
            </div>
@@ -126,8 +149,18 @@ const InDesignWindow: React.FC<InDesignWindowProps> = ({ onClose, onFocus, zInde
           </div>
 
           {/* The Magazine Spread Stage - Reduced Padding p-20 to p-10 */}
-          <div className="flex-1 flex items-center justify-center p-8 relative overflow-hidden">
+          <div className="flex-1 flex flex-col items-center justify-center p-8 relative overflow-hidden">
              
+             {/* Center Caption */}
+             <div className="mb-6 text-center max-w-md">
+               <h3 className="text-xl font-medium text-white/90 tracking-tight leading-tight">
+                 magazine i created based on my time studying abroad in paris
+               </h3>
+               <p className="text-[10px] text-gray-500 uppercase tracking-[0.2em] mt-2 animate-pulse">
+                 Click pages to flip
+               </p>
+             </div>
+
              {/* Instant Magazine Viewer */}
              <div 
                 className="relative flex items-center justify-center"
@@ -155,7 +188,10 @@ const InDesignWindow: React.FC<InDesignWindowProps> = ({ onClose, onFocus, zInde
                 </div>
 
                 {/* Magazine Body */}
-                <div className="w-full h-full flex relative">
+                <div 
+                  className="w-full h-full flex relative cursor-pointer"
+                  onClick={() => { handleNext(); setIsAutoFlipping(false); }}
+                >
                   {spreads[currentSpread].left && (
                     <div className="flex-1 h-full relative overflow-hidden shadow-[15px_0_40px_rgba(0,0,0,0.7)] rounded-l-[1px]">
                       <img src={spreads[currentSpread].left!} className="w-full h-full object-cover select-none" alt="Left" />
@@ -251,22 +287,6 @@ const InDesignWindow: React.FC<InDesignWindowProps> = ({ onClose, onFocus, zInde
         .custom-scroll-dark::-webkit-scrollbar-track { background: transparent; }
         .custom-scroll-dark::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.08); border-radius: 10px; }
       `}</style>
-
-      {/* Resize Handle */}
-      <motion.div
-        drag
-        dragMomentum={false}
-        onDrag={(e, info) => {
-          setContainerSize(prev => ({
-            width: Math.max(600, prev.width + info.delta.x),
-            height: Math.max(450, prev.height + info.delta.y)
-          }));
-        }}
-        onMouseDown={(e) => e.stopPropagation()}
-        className="absolute bottom-1 right-1 w-5 h-5 cursor-nwse-resize z-[200] flex items-end justify-end p-1 group"
-      >
-        <div className="w-2 h-2 border-r border-b border-white/20 rounded-br-[1px]" />
-      </motion.div>
     </motion.div>
   );
 };
