@@ -1,6 +1,6 @@
 
 import React, { useState, useCallback, useRef } from 'react';
-import { AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import DesktopIcon from './components/DesktopIcon';
 import Window from './components/Window';
 import Dock from './components/Dock';
@@ -14,7 +14,7 @@ import The04BrandWindow from './components/The04BrandWindow';
 import EventPlannerBinder from './components/EventPlannerBinder';
 import { DESKTOP_ICONS } from './constants';
 import { WindowData } from './types';
-import { ChevronLeft } from 'lucide-react';
+import { ChevronLeft, X } from 'lucide-react';
 
 // Section Header for Finder Style (used in Project Layouts)
 const SectionHeader = ({ title, isOpen = true }: { title: string, isOpen?: boolean, children?: React.ReactNode }) => (
@@ -288,13 +288,15 @@ const SneexEditorialLookbookWindow = ({
   subtitle, 
   description, 
   images, 
-  details 
+  details,
+  onEnlarge
 }: { 
   title: string, 
   subtitle: string, 
   description: string, 
   images: string[], 
-  details?: React.ReactNode 
+  details?: React.ReactNode,
+  onEnlarge: (url: string, type: 'image' | 'video') => void
 }) => {
   const heroImage = images[0];
   const galleryImages = images.slice(1);
@@ -302,10 +304,13 @@ const SneexEditorialLookbookWindow = ({
   return (
     <div className="flex flex-row items-stretch h-full bg-white overflow-hidden font-sans gap-[60px]">
       {/* Left Column: Fixed Hero Image */}
-      <div className="w-[45%] h-full relative flex-shrink-0">
+      <div 
+        className="w-[45%] h-full relative flex-shrink-0 cursor-zoom-in"
+        onClick={() => onEnlarge(heroImage, 'image')}
+      >
         <img 
           src={heroImage} 
-          className="w-full h-full object-cover block" 
+          className="w-full h-full object-cover block transition-transform hover:scale-[1.02] duration-500" 
           alt="Hero"
           referrerPolicy="no-referrer"
         />
@@ -333,10 +338,14 @@ const SneexEditorialLookbookWindow = ({
         {/* Gallery Grid */}
         <div className="grid grid-cols-2 gap-4 pr-12 pb-12">
           {galleryImages.map((img, i) => (
-            <div key={i} className="aspect-[3/4] overflow-hidden border border-black/10 shadow-sm">
+            <div 
+              key={i} 
+              className="aspect-[3/4] overflow-hidden border border-black/10 shadow-sm cursor-zoom-in"
+              onClick={() => onEnlarge(img, 'image')}
+            >
               <img 
                 src={img} 
-                className="w-full h-full object-cover hover:scale-105 transition-transform duration-500" 
+                className="w-full h-full object-cover hover:scale-[1.05] transition-transform duration-500" 
                 alt={`Gallery ${i}`}
                 referrerPolicy="no-referrer"
               />
@@ -525,6 +534,7 @@ const NotesApp = () => {
 const App: React.FC = () => {
   const [openWindows, setOpenWindows] = useState<WindowData[]>([]);
   const [viewedIds, setViewedIds] = useState<string[]>([]);
+  const [enlargedMedia, setEnlargedMedia] = useState<{ url: string, type: 'image' | 'video' } | null>(null);
   const zIndexRef = useRef(100);
   const desktopRef = useRef<HTMLDivElement>(null);
   const placementIndexRef = useRef(0);
@@ -634,6 +644,7 @@ const App: React.FC = () => {
                   Role: Lead Creative / Photographer for <a href="https://sneex.com/" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">Sneex</a>
                 </span>
               }
+              onEnlarge={(url, type) => setEnlargedMedia({ url, type })}
             />
           );
         } else if (id === 'nyc-mission') {
@@ -655,7 +666,7 @@ const App: React.FC = () => {
         } else if (id === 'event-planner') {
           content = <EventPlannerBinder />;
         } else if (id === 'love') {
-          content = <StyleBundlesWindow />;
+          content = <StyleBundlesWindow onEnlarge={(url, type) => setEnlargedMedia({ url, type })} />;
         } else if (id === 'szept') {
           content = <The04BrandWindow />;
         } else if (id === 'draper-consultant') {
@@ -917,6 +928,54 @@ const App: React.FC = () => {
       />
 
       <div className="fixed inset-0 pointer-events-none opacity-[0.04] mix-blend-multiply z-[5000]" style={{ backgroundImage: `url('https://grainy-gradients.vercel.app/noise.svg')` }} />
+
+      {/* Lightbox Portal */}
+      <AnimatePresence>
+        {enlargedMedia && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/90 backdrop-blur-2xl p-8 cursor-default"
+            onClick={() => setEnlargedMedia(null)}
+          >
+            <motion.div
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.9, opacity: 0 }}
+              className="relative w-full h-full flex items-center justify-center pointer-events-none"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <button
+                className="absolute top-0 right-0 p-4 text-white/60 hover:text-white transition-colors pointer-events-auto z-10"
+                onClick={() => setEnlargedMedia(null)}
+              >
+                <X size={32} />
+              </button>
+
+              <div className="w-full h-full flex items-center justify-center pointer-events-auto">
+                {enlargedMedia.type === 'image' ? (
+                  <img
+                    src={enlargedMedia.url}
+                    alt="Enlarged"
+                    className="max-w-[90%] max-h-[90%] object-contain shadow-2xl rounded-sm"
+                    referrerPolicy="no-referrer"
+                  />
+                ) : (
+                  <video
+                    src={enlargedMedia.url}
+                    className="max-w-[90%] max-h-[90%] object-contain shadow-2xl rounded-sm"
+                    controls
+                    autoPlay
+                    muted={false}
+                    playsInline
+                  />
+                )}
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 };

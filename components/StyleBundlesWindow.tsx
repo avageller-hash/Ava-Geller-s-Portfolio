@@ -2,7 +2,7 @@ import React, { useState, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Volume2, VolumeX, Play } from 'lucide-react';
 
-const VideoItem: React.FC<{ src: string; autoPlay?: boolean }> = ({ src, autoPlay = false }) => {
+const VideoItem: React.FC<{ src: string; autoPlay?: boolean; onEnlarge: (url: string, type: 'image' | 'video') => void }> = ({ src, autoPlay = false, onEnlarge }) => {
   const [isMuted, setIsMuted] = useState(true);
   const [isPlaying, setIsPlaying] = useState(autoPlay);
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -28,8 +28,8 @@ const VideoItem: React.FC<{ src: string; autoPlay?: boolean }> = ({ src, autoPla
 
   return (
     <div 
-      onClick={togglePlay}
-      className="aspect-[9/16] bg-black rounded-xl overflow-hidden shadow-lg transition-transform hover:scale-[1.02] duration-500 relative group cursor-pointer border border-black/5"
+      onClick={() => onEnlarge(src, 'video')}
+      className="aspect-[9/16] bg-black rounded-xl overflow-hidden shadow-lg transition-transform hover:scale-[1.02] duration-500 relative group cursor-zoom-in border border-black/5"
     >
       <video 
         ref={videoRef}
@@ -55,7 +55,7 @@ const VideoItem: React.FC<{ src: string; autoPlay?: boolean }> = ({ src, autoPla
   );
 };
 
-const StyleBundlesWindow = () => {
+const StyleBundlesWindow = ({ onEnlarge }: { onEnlarge: (url: string, type: 'image' | 'video') => void }) => {
   const [activeTab, setActiveTab] = useState<'home' | 'gallery'>('home');
 
   const galleryImages = [
@@ -165,7 +165,7 @@ const StyleBundlesWindow = () => {
                   className="grid grid-cols-2 gap-6"
                 >
                   {galleryVideos.map((vid, i) => (
-                    <VideoItem key={i} src={vid} autoPlay={i === 0} />
+                    <VideoItem key={i} src={vid} autoPlay={i === 0} onEnlarge={onEnlarge} />
                   ))}
                 </motion.div>
               </div>
@@ -181,8 +181,12 @@ const StyleBundlesWindow = () => {
             >
               <div className="grid grid-cols-3 gap-8">
                 {galleryImages.map((img, i) => (
-                  <div key={i} className="group space-y-3">
-                    <div className="aspect-[4/5] bg-gray-100 overflow-hidden shadow-md rounded-xl border border-black/5">
+                  <div 
+                    key={i} 
+                    className="group space-y-3 cursor-zoom-in"
+                    onClick={() => onEnlarge(img, 'image')}
+                  >
+                    <div className="aspect-[4/5] bg-gray-100 overflow-hidden shadow-md rounded-xl border border-black/5 transition-transform hover:scale-[1.02] duration-500">
                       <img 
                         src={img} 
                         className="w-full h-full object-cover transition-all duration-700 group-hover:scale-105 group-hover:-translate-y-1" 
