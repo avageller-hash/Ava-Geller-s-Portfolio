@@ -11,8 +11,8 @@ interface LetterboxdWindowProps {
 }
 
 const LetterboxdWindow: React.FC<LetterboxdWindowProps> = ({ onClose, onFocus, zIndex, startX, startY }) => {
-  const baseWidth = 420;
-  const baseHeight = 260;
+  const baseWidth = 600;
+  const baseHeight = 380;
   const [size, setSize] = useState({ width: baseWidth, height: baseHeight });
 
   const scale = useMemo(() => {
@@ -74,7 +74,7 @@ const LetterboxdWindow: React.FC<LetterboxdWindowProps> = ({ onClose, onFocus, z
               style={{ width: `${10 * scale}px`, height: `${10 * scale}px` }}
             />
         </div>
-        <span className="text-gray-400 font-black tracking-widest uppercase" style={{ fontSize: `${10 * scale}px` }}>Favorites</span>
+        <span className="text-gray-400 font-black tracking-widest uppercase" style={{ fontSize: `${10 * scale}px` }}>Top 4 Movies</span>
         <div style={{ width: `${32 * scale}px` }} />
       </div>
 

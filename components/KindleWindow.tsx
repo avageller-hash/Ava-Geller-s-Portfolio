@@ -175,7 +175,7 @@ const KindleWindow: React.FC<KindleWindowProps> = ({ onClose, onFocus, zIndex, s
                 style={{ height: `${40 * scale}px`, px: `${16 * scale}px`, gap: `${12 * scale}px` }}
               >
                 <Search size={16 * scale} className="text-black/40" />
-                <span className="text-black/40 font-medium" style={{ fontSize: `${14 * scale}px` }}>Search Kindle</span>
+                <span className="text-black/40 font-medium" style={{ fontSize: `${14 * scale}px` }}>what ava's reading</span>
               </div>
               <ShoppingCart size={20 * scale} className="text-black" />
               <MoreVertical size={20 * scale} className="text-black" />
