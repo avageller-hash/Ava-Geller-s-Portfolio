@@ -262,7 +262,7 @@ const EventPlannerBinder: React.FC<EventPlannerBinderProps> = ({ zIndex, onClose
     >
       <div className="relative w-full h-full drop-shadow-[0_50px_50px_rgba(0,0,0,0.5)]">
         {/* Binder Content */}
-        <div className="absolute inset-0 rounded-xl overflow-hidden border border-black/5 bg-white shadow-2xl overflow-y-auto scroll-window">
+        <div className="absolute inset-0 rounded-xl overflow-hidden bg-white shadow-2xl overflow-y-auto scroll-window">
            <Page {...pages[currentPage]} pageNumber={currentPage + 1} totalPages={totalPages} />
         </div>
 

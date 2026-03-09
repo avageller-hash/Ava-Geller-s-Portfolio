@@ -94,15 +94,13 @@ const InDesignWindow: React.FC<InDesignWindowProps> = ({ onClose, onFocus, zInde
         height: containerSize.height,
         position: 'absolute',
       }}
-      className="pointer-events-auto flex flex-col rounded-xl overflow-hidden shadow-[0_50px_100px_-20px_rgba(0,0,0,0.4)] bg-[#2c2c2c] border border-white/10 group/indesign cursor-default"
+      className="pointer-events-auto flex flex-col rounded-xl overflow-hidden shadow-[0_50px_100px_-20px_rgba(0,0,0,0.4)] bg-[#2c2c2c] group/indesign cursor-default"
     >
       {/* Top Application Bar */}
       <div className="h-9 bg-[#3c3c3c] border-b border-black flex items-center justify-between px-3 select-none">
         <div className="flex items-center gap-4">
           <div className="flex gap-1.5 mr-2">
             <button onClick={onClose} className="w-3 h-3 rounded-full bg-[#FF5F56] border border-black/10 hover:brightness-110" />
-            <div className="w-3 h-3 rounded-full bg-[#FFBD2E] border border-black/10" />
-            <div className="w-3 h-3 rounded-full bg-[#27C93F] border border-black/10" />
           </div>
           <div className="flex items-center gap-3 text-[10px] font-medium text-gray-300 tracking-wide">
             <span className="text-white">InDesign 2024</span>

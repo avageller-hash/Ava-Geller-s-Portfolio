@@ -80,7 +80,7 @@ const PhotosWindow: React.FC<PhotosWindowProps> = ({ onClose, onFocus, zIndex, s
         height: size.height,
         position: 'absolute' 
       }}
-      className="pointer-events-auto rounded-[14px] overflow-hidden shadow-[0_30px_60px_-15px_rgba(0,0,0,0.4)] bg-white flex flex-col border border-black/10 cursor-grab active:cursor-grabbing"
+      className="pointer-events-auto rounded-[14px] overflow-hidden shadow-[0_30px_60px_-15px_rgba(0,0,0,0.4)] bg-white flex flex-col cursor-grab active:cursor-grabbing"
     >
       {/* Header */}
       <div 
@@ -93,8 +93,6 @@ const PhotosWindow: React.FC<PhotosWindowProps> = ({ onClose, onFocus, zIndex, s
               className="w-3 h-3 rounded-full bg-[#FF5F56] border border-black/10 hover:brightness-90 transition-all pointer-events-auto"
               style={{ width: `${12 * scale}px`, height: `${12 * scale}px` }}
             />
-            <div className="rounded-full bg-[#FFBD2E] border border-black/10" style={{ width: `${12 * scale}px`, height: `${12 * scale}px` }} />
-            <div className="rounded-full bg-[#27C93F] border border-black/10" style={{ width: `${12 * scale}px`, height: `${12 * scale}px` }} />
         </div>
         <div className="flex-1 text-center pr-12">
            <span className="text-black/60 font-semibold tracking-tight" style={{ fontSize: `${12 * scale}px` }}>Recents</span>

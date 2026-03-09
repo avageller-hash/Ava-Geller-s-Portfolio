@@ -103,7 +103,7 @@ const Window: React.FC<WindowProps> = ({
         '--window-scale': scaleFactor,
         ...customStyle
       }}
-      className={`flex flex-col rounded-xl shadow-[0_50px_100px_-20px_rgba(0,0,0,0.45),0_10px_30px_-10px_rgba(0,0,0,0.2)] border border-black/40 ring-[0.5px] ring-black/10 backdrop-blur-[20px] bg-white/75`}
+      className={`flex flex-col rounded-xl shadow-[0_50px_100px_-20px_rgba(0,0,0,0.45),0_10px_30px_-10px_rgba(0,0,0,0.2)] backdrop-blur-[20px] bg-white/75`}
     >
       {/* Header Bar */}
       <div 
@@ -117,8 +117,6 @@ const Window: React.FC<WindowProps> = ({
           >
             <span className="opacity-0 group-hover:opacity-100 text-[8px] font-bold text-red-950/60 z-10">×</span>
           </button>
-          <div className="w-3.5 h-3.5 rounded-full bg-[#FFBD2E] border border-black/10" />
-          <div className="w-3.5 h-3.5 rounded-full bg-[#27C93F] border border-black/10" />
         </div>
         
         <div className="flex-1 text-left px-2">

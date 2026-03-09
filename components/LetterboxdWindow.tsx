@@ -60,7 +60,7 @@ const LetterboxdWindow: React.FC<LetterboxdWindowProps> = ({ onClose, onFocus, z
         height: size.height,
         position: 'absolute' 
       }}
-      className="pointer-events-auto rounded-[14px] overflow-hidden shadow-[0_25px_50px_-12px_rgba(0,0,0,0.5)] bg-[#14181c] flex flex-col border border-white/10 cursor-grab active:cursor-grabbing"
+      className="pointer-events-auto rounded-[14px] overflow-hidden shadow-[0_25px_50px_-12px_rgba(0,0,0,0.5)] bg-[#14181c] flex flex-col cursor-grab active:cursor-grabbing"
     >
       {/* Header */}
       <div 
@@ -73,8 +73,6 @@ const LetterboxdWindow: React.FC<LetterboxdWindowProps> = ({ onClose, onFocus, z
               className="rounded-full bg-[#ff4d4d] border border-black/10 hover:brightness-90 transition-all pointer-events-auto"
               style={{ width: `${10 * scale}px`, height: `${10 * scale}px` }}
             />
-            <div className="rounded-full bg-[#ffb142] border border-black/10" style={{ width: `${10 * scale}px`, height: `${10 * scale}px` }} />
-            <div className="rounded-full bg-[#00e054] border border-black/10" style={{ width: `${10 * scale}px`, height: `${10 * scale}px` }} />
         </div>
         <span className="text-gray-400 font-black tracking-widest uppercase" style={{ fontSize: `${10 * scale}px` }}>Favorites</span>
         <div style={{ width: `${32 * scale}px` }} />

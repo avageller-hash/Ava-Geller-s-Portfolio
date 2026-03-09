@@ -1,6 +1,6 @@
 import React, { useState, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Volume2, VolumeX, Play, ChevronDown, ChevronUp } from 'lucide-react';
+import { Volume2, VolumeX, Play } from 'lucide-react';
 
 const VideoItem: React.FC<{ src: string; autoPlay?: boolean }> = ({ src, autoPlay = false }) => {
   const [isMuted, setIsMuted] = useState(true);
@@ -143,7 +143,7 @@ const StyleBundlesWindow = () => {
                           </li>
                           <li className="text-[16px] text-[#6e6e73] flex items-center gap-3">
                             <div className="w-1.5 h-1.5 rounded-full bg-black/20" />
-                            <span className="font-bold">$7,500 revenue in 1 year</span>
+                            <span className="font-bold">$7,500 net profit in 1 year</span>
                           </li>
                           <li className="text-[16px] text-[#6e6e73] flex items-center gap-3">
                             <div className="w-1.5 h-1.5 rounded-full bg-black/20" />

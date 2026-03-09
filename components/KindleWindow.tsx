@@ -137,7 +137,7 @@ const KindleWindow: React.FC<KindleWindowProps> = ({ onClose, onFocus, zIndex, s
       </div>
 
       {/* Kindle Hardware Bezel */}
-      <div className="w-full h-full bg-[#1a1a1a] rounded-[44px] p-2 shadow-[0_50px_100px_-20px_rgba(0,0,0,0.5),inset_0_2px_10px_rgba(255,255,255,0.1)] border-t border-white/10 flex flex-col items-center cursor-grab active:cursor-grabbing relative">
+      <div className="w-full h-full bg-[#1a1a1a] rounded-[44px] p-2 shadow-[0_50px_100px_-20px_rgba(0,0,0,0.5),inset_0_2px_10px_rgba(255,255,255,0.1)] flex flex-col items-center cursor-grab active:cursor-grabbing relative">
         
         {/* Screen Area */}
         <div 

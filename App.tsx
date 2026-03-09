@@ -524,6 +524,7 @@ const NotesApp = () => {
 
 const App: React.FC = () => {
   const [openWindows, setOpenWindows] = useState<WindowData[]>([]);
+  const [viewedIds, setViewedIds] = useState<string[]>([]);
   const zIndexRef = useRef(100);
   const desktopRef = useRef<HTMLDivElement>(null);
   const placementIndexRef = useRef(0);
@@ -568,6 +569,9 @@ const App: React.FC = () => {
   }, []);
 
   const handleOpenDesktopFile = useCallback((id: string, title: string, startX?: number, startY?: number) => {
+    // Mark as viewed
+    setViewedIds(prev => prev.includes(id) ? prev : [...prev, id]);
+
     setOpenWindows(prev => {
       const existing = prev.find(w => w.id === id);
       const nextZ = getNextZ();
@@ -817,6 +821,7 @@ const App: React.FC = () => {
               orientation={icon.orientation}
               type={icon.type}
               isProminent={icon.isProminent}
+              isViewed={viewedIds.includes(icon.id)}
               onClick={(startX, startY) => handleOpenDesktopFile(icon.id, icon.title, startX, startY)}
               onFocus={() => handleFocusWindow(icon.id)}
               zIndex={30}

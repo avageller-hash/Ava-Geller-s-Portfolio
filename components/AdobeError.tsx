@@ -59,7 +59,7 @@ const AdobeError: React.FC<AdobeErrorProps> = ({ onClose, onFocus, zIndex, start
         height: size.height,
         position: 'absolute' 
       }}
-      className="pointer-events-auto rounded-[12px] overflow-hidden shadow-[0_15px_35px_-8px_rgba(0,0,0,0.6)] bg-[#2C2C2C] flex flex-col border border-white/5 cursor-grab active:cursor-grabbing relative"
+      className="pointer-events-auto rounded-[12px] overflow-hidden shadow-[0_15px_35px_-8px_rgba(0,0,0,0.6)] bg-[#2C2C2C] flex flex-col cursor-grab active:cursor-grabbing relative"
     >
       {/* Header */}
       <div 

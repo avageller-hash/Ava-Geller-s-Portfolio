@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { useRef } from 'react';
 import { motion } from 'framer-motion';
 import { iconSpring } from '../constants';
 
@@ -18,6 +18,7 @@ interface DesktopIconProps {
   zIndex?: number;
   containerRef: React.RefObject<HTMLDivElement>;
   isDimmed?: boolean;
+  isViewed?: boolean;
 }
 
 const FolderIconGraphic = () => (
@@ -45,10 +46,18 @@ const DesktopIcon: React.FC<DesktopIconProps> = ({
   onDragEnd,
   zIndex = 30,
   containerRef,
-  isDimmed = false
+  isDimmed = false,
+  isViewed = false
 }) => {
+  const isDragging = useRef(false);
+
   const handleLaunch = () => {
+    if (isDragging.current) return;
     onClick(x, y);
+  };
+
+  const handleDragStart = () => {
+    isDragging.current = true;
   };
 
   const handleDragEnd = (event: any, info: any) => {
@@ -58,10 +67,11 @@ const DesktopIcon: React.FC<DesktopIconProps> = ({
       const newY = ((info.point.y - rect.top) / rect.height) * 100;
       onDragEnd(id, newX, newY);
     }
-    // Also trigger launch if it wasn't a significant drag
-    if (Math.abs(info.offset.x) < 5 && Math.abs(info.offset.y) < 5) {
-      handleLaunch();
-    }
+
+    // Tiny delay to ensure onTap doesn't fire if it was a drag
+    setTimeout(() => {
+      isDragging.current = false;
+    }, 50);
   };
 
   // Dimensions based on orientation/type
@@ -77,8 +87,9 @@ const DesktopIcon: React.FC<DesktopIconProps> = ({
       // Logic triggers
       drag
       dragConstraints={containerRef}
-      dragElastic={0.1}
+      dragElastic={0}
       dragMomentum={false}
+      onDragStart={handleDragStart}
       onDragEnd={handleDragEnd}
       onMouseDown={onFocus}
       onTap={handleLaunch}
@@ -112,7 +123,7 @@ const DesktopIcon: React.FC<DesktopIconProps> = ({
       }}
       
       // Interaction Styles
-      whileTap={{ scale: isProminent ? 1.15 : 0.98 }}
+      whileTap={{ scale: 0.95 }}
       whileDrag={{ 
         scale: isProminent ? 1.25 : 1.1, 
         zIndex: 5000, 
@@ -143,6 +154,13 @@ const DesktopIcon: React.FC<DesktopIconProps> = ({
           }}
           transition={{ duration: 0.2 }}
         />
+
+        {/* Viewed State Dot */}
+        {!isViewed && (
+          <div className="absolute -top-1 -right-1 z-50">
+            <div className="w-3 h-3 bg-[#007AFF] rounded-full shadow-[0_0_8px_rgba(0,122,255,0.8)] animate-pulse border border-white/40" />
+          </div>
+        )}
         
         {/* Icon Content Area */}
         {type === 'folder' ? (
