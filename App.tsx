@@ -531,6 +531,23 @@ const NotesApp = () => {
   );
 };
 
+const DockHint = () => (
+  <div className="fixed bottom-[45px] left-[80px] flex flex-row items-center gap-6 pointer-events-none z-[50] select-none opacity-70">
+    <span className="font-script text-[18px] text-white tracking-wide">
+      Learn more about Ava
+    </span>
+    <svg width="80" height="40" viewBox="0 0 80 40" fill="none" className="overflow-visible">
+      <path 
+        d="M2 15C15 10 45 35 75 15M75 15C70 12 62 8 60 2M75 15C70 18 62 25 60 35" 
+        stroke="white" 
+        strokeWidth="1.5" 
+        strokeLinecap="round" 
+        strokeLinejoin="round" 
+      />
+    </svg>
+  </div>
+);
+
 const App: React.FC = () => {
   const [openWindows, setOpenWindows] = useState<WindowData[]>([]);
   const [viewedIds, setViewedIds] = useState<string[]>([]);
@@ -814,9 +831,9 @@ const App: React.FC = () => {
   return (
     <div ref={desktopRef} className="w-screen h-screen overflow-hidden relative">
       <img 
-        src="https://i.imgur.com/i5C34Bj.jpeg" 
+        src="https://i.imgur.com/jMeW4mJ.jpeg" 
         alt="Background"
-        style={{ position: 'fixed', top: 0, left: 0, width: '100vw', height: '100vh', zIndex: 0, objectFit: 'cover', filter: 'blur(10px) brightness(1.1)', scale: '1.05' }} 
+        style={{ position: 'fixed', top: 0, left: 0, width: '100vw', height: '100vh', zIndex: 0, objectFit: 'cover', filter: 'blur(4px) brightness(1.1)', scale: '1.05' }} 
       />
       <div className="fixed inset-0 bg-white/40 pointer-events-none z-[1]" />
       
@@ -921,6 +938,8 @@ const App: React.FC = () => {
           </AnimatePresence>
         </div>
       </div>
+
+      <DockHint />
 
       <Dock 
         onOpen={handleOpenDockApp} 
