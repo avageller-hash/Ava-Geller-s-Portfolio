@@ -6,6 +6,7 @@ import Window from './components/Window';
 import Dock from './components/Dock';
 import AdobeError from './components/AdobeError';
 import LetterboxdWindow from './components/LetterboxdWindow';
+import DraperWindow from './components/DraperWindow';
 import KindleWindow from './components/KindleWindow';
 import PhotosWindow from './components/PhotosWindow';
 import InDesignWindow from './components/InDesignWindow';
@@ -687,28 +688,7 @@ const App: React.FC = () => {
         } else if (id === 'szept') {
           content = <The04BrandWindow />;
         } else if (id === 'draper-consultant') {
-          content = (
-            <div className="bg-white flex flex-col items-center p-8">
-              <div className="w-full max-w-3xl space-y-8">
-                <div className="rounded-2xl overflow-hidden shadow-2xl border border-black/10">
-                  <img 
-                    src="https://i.imgur.com/tBzPpHv.jpeg" 
-                    alt="Pitching to Tim Draper" 
-                    className="w-full h-auto block"
-                    referrerPolicy="no-referrer"
-                  />
-                </div>
-                <div className="space-y-6 text-center">
-                  <p className="text-[16px] text-[#1d1d1f] font-normal leading-[1.6] italic">
-                    me pitching an investment memo to Tim Draper, founder of <a href="https://www.draper.vc/" target="_blank" rel="noopener noreferrer" className="text-[#007AFF] hover:underline font-bold">Draper Associates</a> known for his early-stage bets on Tesla, SpaceX, Skype, and Baidu
-                  </p>
-                  <p className="text-[18px] text-[#1d1d1f] font-bold leading-[1.6] italic">
-                    I’d tell you the details, but then I’d have to kill you... (Standard NDA behavior)
-                  </p>
-                </div>
-              </div>
-            </div>
-          );
+          content = null;
         } else {
           content = <ProjectInformationLayout title={title} thumbnail={icon?.iconSrc} />;
         }
@@ -909,6 +889,12 @@ const App: React.FC = () => {
                     onFocus={() => handleFocusWindow(win.id)}
                     startX={win.startX}
                     startY={win.startY}
+                  />
+                ) : win.id === 'draper-consultant' ? (
+                  <DraperWindow
+                    zIndex={win.zIndex || 100}
+                    onClose={() => handleCloseWindow(win.id)}
+                    onFocus={() => handleFocusWindow(win.id)}
                   />
                 ) : (
                   win.content && (

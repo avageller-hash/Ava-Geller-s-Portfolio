@@ -87,28 +87,30 @@ const Window: React.FC<WindowProps> = ({
       onMouseDown={onFocus}
       style={{ 
         zIndex,
-        left: '50%',
-        top: '45%',
-        translateX: '-50%',
-        translateY: '-50%',
-        width: baseWidth,
-        height: height ? height : 'fit-content',
+        // Safari-Friendly Centering
+        position: 'fixed',
+        inset: 0,
+        margin: 'auto',
+        width: baseWidth === 'fit-content' ? 'fit-content' : baseWidth,
+        height: height === 'fit-content' || !height ? 'fit-content' : height,
+        minHeight: 200, // Fix Container Collapse
         maxWidth: '95vw',
         maxHeight: maxHeight || '75vh',
-        position: 'absolute',
         touchAction: 'none',
         overflow: overflowVisible ? 'visible' : 'hidden',
+        WebkitBackfaceVisibility: 'hidden', // Global CSS Hack
         // Pass scale factor to CSS for dynamic adjustments if needed
         //@ts-ignore
         '--window-scale': scaleFactor,
         ...customStyle
       }}
-      className={`flex flex-col rounded-xl shadow-[0_50px_100px_-20px_rgba(0,0,0,0.45),0_10px_30px_-10px_rgba(0,0,0,0.2)] backdrop-blur-[20px] bg-white/75`}
+      className={`flex flex-col rounded-xl shadow-[0_50px_100px_-20px_rgba(0,0,0,0.45),0_10px_30px_-10px_rgba(0,0,0,0.2)] backdrop-blur-[20px] bg-white/75 flex-shrink-0`}
     >
       {/* Header Bar */}
       <div 
         onPointerDown={(e) => dragControls.start(e)}
-        className={`h-12 flex items-center px-4 border-b border-black/40 select-none cursor-default active:cursor-grabbing flex-shrink-0 bg-transparent`}
+        className={`h-12 w-full flex items-center px-4 border-b border-black/40 select-none cursor-default active:cursor-grabbing flex-shrink-0 bg-transparent`}
+        style={{ height: 48 }} // Explicit height for Safari
       >
         <div className="flex gap-2 w-24">
           <button 
@@ -128,7 +130,7 @@ const Window: React.FC<WindowProps> = ({
 
       {/* Body Content */}
       <div 
-        className={`flex-1 ${overflowVisible ? 'overflow-visible' : 'overflow-hidden'} relative`}
+        className={`flex-1 flex-shrink-0 ${overflowVisible ? 'overflow-visible' : 'overflow-hidden'} relative`}
       >
         {!overflowVisible && (
           <style dangerouslySetInnerHTML={{ __html: `
