@@ -1,5 +1,5 @@
 
-import React, { useState, useCallback, useRef } from 'react';
+import React, { useState, useCallback, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import DesktopIcon from './components/DesktopIcon';
 import Window from './components/Window';
@@ -7,6 +7,7 @@ import Dock from './components/Dock';
 import AdobeError from './components/AdobeError';
 import LetterboxdWindow from './components/LetterboxdWindow';
 import DraperWindow from './components/DraperWindow';
+import MovieTrailerWindow from './components/MovieTrailerWindow';
 import KindleWindow from './components/KindleWindow';
 import PhotosWindow from './components/PhotosWindow';
 import InDesignWindow from './components/InDesignWindow';
@@ -15,7 +16,7 @@ import The04BrandWindow from './components/The04BrandWindow';
 import EventPlannerBinder from './components/EventPlannerBinder';
 import { DESKTOP_ICONS } from './constants';
 import { WindowData } from './types';
-import { ChevronLeft, X } from 'lucide-react';
+import { ChevronLeft, X, Search } from 'lucide-react';
 
 // Section Header for Finder Style (used in Project Layouts)
 const SectionHeader = ({ title, isOpen = true }: { title: string, isOpen?: boolean, children?: React.ReactNode }) => (
@@ -361,7 +362,7 @@ const SneexEditorialLookbookWindow = ({
 const FolderLayout = ({ title, items, videoMapping, onSizeChange }: { title: string; items?: string[]; videoMapping?: Record<string, string>; onSizeChange?: (size: { width: number | string; height: number | string }) => void }) => {
   const [selectedVideo, setSelectedVideo] = useState<string | null>(null);
   const [selectedTitle, setSelectedTitle] = useState<string | null>(null);
-  const defaultItems = items || [...Array(6)].map((_, i) => `Item ${i + 1}`);
+  const defaultItems = items !== undefined ? items : [...Array(6)].map((_, i) => `Item ${i + 1}`);
 
   const handleBack = () => {
     setSelectedVideo(null);
@@ -409,6 +410,17 @@ const FolderLayout = ({ title, items, videoMapping, onSizeChange }: { title: str
             playsInline
           />
         </div>
+      </div>
+    );
+  }
+
+  if (defaultItems.length === 0) {
+    return (
+      <div className="w-[360px] h-[180px] bg-white flex flex-col items-center justify-center p-8 select-none">
+        <div className="w-14 h-11 bg-[#7cc8ff]/30 rounded-[3px] relative mb-3 flex items-center justify-center">
+          <div className="absolute left-0 -top-1 w-5 h-2 bg-[#7cc8ff]/30 rounded-t-[2px]" />
+        </div>
+        <span className="text-[11px] font-mono text-black/30 uppercase tracking-widest">0 items</span>
       </div>
     );
   }
@@ -490,22 +502,152 @@ const NotesApp = () => {
           )}
 
           {activeTab === 'cv' && (
-            <div className="space-y-6 animate-in fade-in duration-300">
-              <div className="space-y-2">
-                <div className="text-[18px] text-[#1d1d1f] font-semibold tracking-[-0.01em] mb-2">Experience</div>
-                <div className="flex flex-col">
-                  <NotesCheckItem>UI/growth intern @ EQ.app [ai agent startup] (winter ’26)</NotesCheckItem>
-                  <NotesCheckItem>Finance Intern for Sara Blakely (summer ’25)</NotesCheckItem>
-                  <NotesCheckItem>Contract consultant for Draper Associates (Fall ’24)</NotesCheckItem>
-                  <NotesCheckItem>Senior Analyst for Bruin Ventures</NotesCheckItem>
-                  <NotesCheckItem>2x founder [The 04 Brand + Style Bundles by Ava] (2021/2022)</NotesCheckItem>
+            <div className="animate-in fade-in duration-300 w-full max-w-3xl pb-12">
+              <div className="bg-white border border-black/10 rounded-sm shadow-[0_2px_12px_rgba(0,0,0,0.06)] p-7 sm:p-9 font-sans text-black">
+                {/* Header */}
+                <div className="text-center pb-3 border-b border-black">
+                  <h1 className="text-[24px] font-bold tracking-tight text-black mb-1">Ava Geller</h1>
+                  <div className="flex flex-wrap items-center justify-center gap-x-2 text-[12px] text-[#333]">
+                    <span>Los Angeles, CA</span>
+                    <span>•</span>
+                    <span>4048252545</span>
+                    <span>•</span>
+                    <a href="mailto:avageller@ucla.edu" className="hover:underline text-blue-700">avageller@ucla.edu</a>
+                    <span>•</span>
+                    <a href="https://linkedin.com/in/ava-geller" target="_blank" rel="noreferrer" className="hover:underline text-blue-700">linkedin.com/in/ava-geller</a>
+                    <span>•</span>
+                    <a href="https://avagportfolio.vercel.app" target="_blank" rel="noreferrer" className="hover:underline text-blue-700">avagportfolio.vercel.app</a>
+                  </div>
                 </div>
-              </div>
-              
-              <div className="space-y-2">
-                <div className="text-[18px] text-[#1d1d1f] font-semibold tracking-[-0.01em] mb-2">Education</div>
-                <div className="flex flex-col">
-                  <NotesCheckItem>UCLA - Cognitive Science B.S. (2023-2027)</NotesCheckItem>
+
+                {/* Education */}
+                <div className="mt-4">
+                  <h2 className="text-[12px] font-bold uppercase tracking-wider text-black border-b border-black pb-0.5 mb-2">
+                    Education
+                  </h2>
+                  <div className="flex justify-between items-baseline text-[12.5px]">
+                    <span className="font-bold text-black">University of California, Los Angeles (UCLA)</span>
+                    <span className="text-[#333]">Los Angeles, CA</span>
+                  </div>
+                  <div className="flex justify-between items-baseline text-[12px] text-[#444] mt-0.5">
+                    <span>B.S. Cognitive Science - GPA: 3.72/4.0</span>
+                    <span>Expected June 2027</span>
+                  </div>
+                </div>
+
+                {/* Work Experience */}
+                <div className="mt-4">
+                  <h2 className="text-[12px] font-bold uppercase tracking-wider text-black border-b border-black pb-0.5 mb-2">
+                    Work Experience
+                  </h2>
+
+                  {/* Hello Sunshine */}
+                  <div className="mb-3.5">
+                    <div className="flex justify-between items-baseline text-[12.5px]">
+                      <span className="font-bold text-black">Hello Sunshine – Reese Witherspoon</span>
+                      <span className="text-[#333]">Los Angeles, CA</span>
+                    </div>
+                    <div className="flex justify-between items-baseline text-[12px] italic text-[#444] mt-0.5 mb-1">
+                      <span>Growth & Insights Intern</span>
+                      <span>Jun 2026 – Aug 2026</span>
+                    </div>
+                    <ul className="list-disc list-outside ml-4 space-y-1 text-[11.5px] text-[#222] leading-[1.45]">
+                      <li>Led earned media reporting for: Apple TV ("Lucky"), Prime Video ("Elle" – 342M+ views across promotional posts), and WhatsApp (53 creator/local partners tracked weekly for Book Club chapters, contributing to the Y2 negotiation pitch).</li>
+                      <li>Sought out by the Director of Integrated Marketing and Reese's Book Club Marketing Director to strengthen three multi-million-dollar brand partnership pitches (Lovesac, Apple Books, Coach) with original, data-backed insights.</li>
+                      <li>Engineered a custom LLM tool synthesizing 2,000+ proprietary data points from 5+ years of company research – now adopted across Social, Sales, and Marketing teams across all 3 brands, the first tool of its kind in company history.</li>
+                      <li>Designed cross-channel analytics dashboards (Dash Social, CreatorIQ, Quid) across four brands, presenting Year 1 recaps and tentpole strategy one-pagers to senior leadership; also pitched an original book-to-screen adaptation and produced the accompanying sizzle reel in DaVinci Resolve.</li>
+                    </ul>
+                  </div>
+
+                  {/* EQ.app */}
+                  <div className="mb-3.5">
+                    <div className="flex justify-between items-baseline text-[12.5px]">
+                      <span className="font-bold text-black">EQ.app – AI Agent Tech Startup</span>
+                      <span className="text-[#333]">Remote</span>
+                    </div>
+                    <div className="flex justify-between items-baseline text-[12px] italic text-[#444] mt-0.5 mb-1">
+                      <span>Growth Intern (PM & UI/UX Focus)</span>
+                      <span>Jan 2026 – Apr 2026</span>
+                    </div>
+                    <ul className="list-disc list-outside ml-4 space-y-1 text-[11.5px] text-[#222] leading-[1.45]">
+                      <li>Designed high-fidelity landing pages to visualize autonomous agent use cases; translated complex AI capabilities into user-centric UI prototypes for B2C clients. Organized a private AI networking event in LA for the company investors.</li>
+                    </ul>
+                  </div>
+
+                  {/* Sara Blakely - Sneex */}
+                  <div className="mb-3.5">
+                    <div className="flex justify-between items-baseline text-[12.5px]">
+                      <span className="font-bold text-black">Sara Blakely Internship - Sneex</span>
+                      <span className="text-[#333]">Atlanta, GA</span>
+                    </div>
+                    <div className="flex justify-between items-baseline text-[12px] italic text-[#444] mt-0.5 mb-1">
+                      <span>Finance and Operations Intern</span>
+                      <span>Jun 2025 – Aug 2025</span>
+                    </div>
+                    <ul className="list-disc list-outside ml-4 space-y-1 text-[11.5px] text-[#222] leading-[1.45]">
+                      <li>Produced/edited marketing reel personally selected by Sara Blakely to run as a paid ad, continuously funded since Aug '25.</li>
+                      <li>Led team of 5 on a 48-hour research/content production trip to NYC; conducting 115 cold-approach street interviews; synthesized data points into a strategy presentation delivered to Sara Blakely.</li>
+                      <li>Worked directly with CFO to guide weekly decisions on pricing, inventory, and growth through financial modeling and market research.</li>
+                    </ul>
+                  </div>
+
+                  {/* Bruin Ventures */}
+                  <div className="mb-3.5">
+                    <div className="flex justify-between items-baseline text-[12.5px]">
+                      <span className="font-bold text-black">Bruin Ventures – UCLA's Premier VC and Entrepreneurship Org</span>
+                      <span className="text-[#333]">Los Angeles, CA</span>
+                    </div>
+                    <div className="flex justify-between items-baseline text-[12px] italic text-[#444] mt-0.5 mb-1">
+                      <span>Senior Analyst & Project Manager</span>
+                      <span>Oct 2024 – Present</span>
+                    </div>
+                    <ul className="list-disc list-outside ml-4 space-y-1 text-[11.5px] text-[#222] leading-[1.45]">
+                      <li>1 of 13 selected from 507 applicants; completed 50+ hours of intensive training on VC and startup fundamentals.</li>
+                      <li>Selected to be a contract consultant for Draper Associates, pitching investment memos directly to billionaire investor Tim Draper on the AR/VR sector.</li>
+                      <li>Executed 4 project-based client engagements across VC and startup verticals, including a 250-person event to onboard Ditto AI users resulting in 1000 signups for the app.</li>
+                    </ul>
+                  </div>
+
+                  {/* Hiike */}
+                  <div className="mb-3.5">
+                    <div className="flex justify-between items-baseline text-[12.5px]">
+                      <span className="font-bold text-black">Hiike – Film-Tech Startup</span>
+                      <span className="text-[#333]">Los Angeles, CA</span>
+                    </div>
+                    <div className="flex justify-between items-baseline text-[12px] italic text-[#444] mt-0.5 mb-1">
+                      <span>Business Development Intern</span>
+                      <span>Feb 2025 – May 2025</span>
+                    </div>
+                    <ul className="list-disc list-outside ml-4 space-y-1 text-[11.5px] text-[#222] leading-[1.45]">
+                      <li>Built a film festival partnerships database from scratch, tracking 300+ sponsors and creating a scalable outreach system to connect independent films with festivals.</li>
+                      <li>Refined the founder's investor pitch decks ahead of VC meetings, shaping the narrative around the brand positioning and go-to-market strategy.</li>
+                    </ul>
+                  </div>
+
+                  {/* 2x Founder */}
+                  <div className="mb-3.5">
+                    <div className="flex justify-between items-baseline text-[12.5px]">
+                      <span className="font-bold text-black">2x Founder</span>
+                      <span className="text-[#333]"></span>
+                    </div>
+                    <div className="flex justify-between items-baseline text-[12px] italic text-[#444] mt-0.5 mb-1">
+                      <span>Style Bundles by Ava/ The04Brand</span>
+                      <span>Jan 2022 – Jun 2023</span>
+                    </div>
+                    <ul className="list-disc list-outside ml-4 space-y-1 text-[11.5px] text-[#222] leading-[1.45]">
+                      <li>Bootstrapped two independent businesses – a thrift resale brand and a custom loungewear line (founded at age 16) – driving 175+ sales and $10,000 in combined revenue over 18 months through entirely self-produced content and branding.</li>
+                    </ul>
+                  </div>
+                </div>
+
+                {/* Additional */}
+                <div className="mt-4">
+                  <h2 className="text-[12px] font-bold uppercase tracking-wider text-black border-b border-black pb-0.5 mb-2">
+                    Additional
+                  </h2>
+                  <p className="text-[11.5px] text-[#222] leading-[1.5]">
+                    <span className="font-semibold">Skills:</span> Dash Social, CreatorIQ, DaVinci Resolve/Premiere, UI/UX, pitch decks, Excel modeling, consumer insights
+                  </p>
                 </div>
               </div>
             </div>
@@ -532,22 +674,50 @@ const NotesApp = () => {
   );
 };
 
-const DockHint = () => (
-  <div className="fixed bottom-[45px] left-[80px] flex flex-row items-center gap-6 pointer-events-none z-[50] select-none opacity-70">
-    <span className="font-script text-[18px] text-white tracking-wide">
-      Learn more about Ava
-    </span>
-    <svg width="80" height="40" viewBox="0 0 80 40" fill="none" className="overflow-visible">
-      <path 
-        d="M2 15C15 10 45 35 75 15M75 15C70 12 62 8 60 2M75 15C70 18 62 25 60 35" 
-        stroke="white" 
-        strokeWidth="1.5" 
-        strokeLinecap="round" 
-        strokeLinejoin="round" 
-      />
-    </svg>
-  </div>
-);
+const SpotlightSearchHint: React.FC = () => {
+  const fullText = "click on each folder to see what i've been up to";
+  const [displayedText, setDisplayedText] = useState("");
+
+  useEffect(() => {
+    let index = 0;
+    const startTimer = setTimeout(() => {
+      const interval = setInterval(() => {
+        index++;
+        setDisplayedText(fullText.slice(0, index));
+        if (index >= fullText.length) {
+          clearInterval(interval);
+        }
+      }, 85);
+
+      return () => clearInterval(interval);
+    }, 900);
+
+    return () => clearTimeout(startTimer);
+  }, []);
+
+  return (
+    <motion.div
+      initial={{ y: -20, opacity: 0, scale: 0.98 }}
+      animate={{ y: 0, opacity: 1, scale: 1 }}
+      transition={{ delay: 0.35, duration: 0.7, type: "spring", stiffness: 260, damping: 22 }}
+      className="fixed top-7 left-1/2 -translate-x-1/2 z-[25] pointer-events-none select-none max-w-[92vw]"
+    >
+      <div className="h-[46px] px-4 rounded-[16px] bg-white/75 backdrop-blur-2xl border border-white/60 shadow-[0_16px_40px_rgba(0,0,0,0.12),0_1px_3px_rgba(0,0,0,0.06),inset_0_1px_1px_rgba(255,255,255,0.8)] inline-flex items-center gap-2.5 w-fit">
+        <Search size={18} className="text-[#1d1d1f]/45 flex-shrink-0" strokeWidth={2.2} />
+        <div className="flex items-center">
+          <span className="text-[15px] text-[#1d1d1f] font-normal tracking-[-0.01em] whitespace-nowrap">
+            {displayedText}
+          </span>
+          <motion.span
+            animate={{ opacity: [1, 0, 1] }}
+            transition={{ repeat: Infinity, duration: 0.85, ease: "steps(2, start)" }}
+            className="inline-block w-[2px] h-[17px] bg-[#007AFF] ml-0.5 flex-shrink-0 rounded-full"
+          />
+        </div>
+      </div>
+    </motion.div>
+  );
+};
 
 const App: React.FC = () => {
   const [openWindows, setOpenWindows] = useState<WindowData[]>([]);
@@ -600,6 +770,11 @@ const App: React.FC = () => {
     // Mark as viewed
     setViewedIds(prev => prev.includes(id) ? prev : [...prev, id]);
 
+    if (id === 'projekty') {
+      window.open('https://avageller.my.canva.site/ugcportfolio', '_blank', 'noopener,noreferrer');
+      return;
+    }
+
     setOpenWindows(prev => {
       const existing = prev.find(w => w.id === id);
       const nextZ = getNextZ();
@@ -619,12 +794,7 @@ const App: React.FC = () => {
         };
 
         if (id === 'projekty') {
-          const videoMapping = {
-            "rolling loud miami": "https://i.imgur.com/rxEFoOK.mp4",
-            "fun mix": "https://i.imgur.com/Rcd2OVL.mp4",
-            "my fav band, the backseat lovers": "https://i.imgur.com/29e6kaW.mp4"
-          };
-          content = <FolderLayout title={title} items={Object.keys(videoMapping)} videoMapping={videoMapping} onSizeChange={updateSize} />;
+          content = <FolderLayout title={title} items={[]} videoMapping={{}} onSizeChange={updateSize} />;
         } else {
           content = <FolderLayout title={title} onSizeChange={updateSize} />;
         }
@@ -688,6 +858,8 @@ const App: React.FC = () => {
         } else if (id === 'szept') {
           content = <The04BrandWindow />;
         } else if (id === 'draper-consultant') {
+          content = null;
+        } else if (id === 'movie-trailer') {
           content = null;
         } else {
           content = <ProjectInformationLayout title={title} thumbnail={icon?.iconSrc} />;
@@ -818,10 +990,13 @@ const App: React.FC = () => {
       <div className="fixed inset-0 bg-white/40 pointer-events-none z-[1]" />
       
       <div className="absolute inset-0 z-[10] pointer-events-none">
+        <SpotlightSearchHint />
+
         <div className="absolute inset-0 z-[30] pointer-events-none">
-          {DESKTOP_ICONS.map((icon) => (
+          {DESKTOP_ICONS.map((icon, index) => (
             <DesktopIcon
               key={icon.id}
+              index={index}
               title={icon.title}
               iconSrc={icon.iconSrc}
               x={icon.x}
@@ -838,7 +1013,7 @@ const App: React.FC = () => {
           ))}
         </div>
 
-        <div className="absolute inset-0 z-[40] pointer-events-none">
+        <div className="absolute inset-0 z-[50] pointer-events-none">
           <AnimatePresence>
             {openWindows.map((win) => (
               <div key={win.id} className="pointer-events-auto">
@@ -896,6 +1071,14 @@ const App: React.FC = () => {
                     onClose={() => handleCloseWindow(win.id)}
                     onFocus={() => handleFocusWindow(win.id)}
                   />
+                ) : win.id === 'movie-trailer' ? (
+                  <MovieTrailerWindow
+                    zIndex={win.zIndex || 100}
+                    onClose={() => handleCloseWindow(win.id)}
+                    onFocus={() => handleFocusWindow(win.id)}
+                    startX={win.startX}
+                    startY={win.startY}
+                  />
                 ) : (
                   win.content && (
                     <Window
@@ -924,8 +1107,6 @@ const App: React.FC = () => {
           </AnimatePresence>
         </div>
       </div>
-
-      <DockHint />
 
       <Dock 
         onOpen={handleOpenDockApp} 

@@ -20,7 +20,8 @@ const DraperWindow: React.FC<DraperWindowProps> = ({ onClose, onFocus, zIndex })
         inset: 0,
         margin: 'auto',
         width: '800px',
-        height: 'auto',
+        maxWidth: '92vw',
+        height: 'fit-content',
         maxHeight: '80vh',
         display: 'flex',
         flexDirection: 'column',
@@ -49,12 +50,12 @@ const DraperWindow: React.FC<DraperWindowProps> = ({ onClose, onFocus, zIndex })
         <div className="flex gap-2">
           <button 
             onClick={(e) => { e.stopPropagation(); onClose(); }}
-            className="w-3 h-3 rounded-full bg-[#FF5F56] border border-black/10 hover:brightness-90 transition-all"
-          />
-          <div className="w-3 h-3 rounded-full bg-[#FFBD2E] border border-black/10" />
-          <div className="w-3 h-3 rounded-full bg-[#27C93F] border border-black/10" />
+            className="w-3.5 h-3.5 rounded-full bg-[#FF5F56] border border-black/10 flex items-center justify-center transition-all hover:brightness-90 active:scale-90 group relative"
+          >
+            <span className="opacity-0 group-hover:opacity-100 text-[8px] font-bold text-red-950/60 z-10">×</span>
+          </button>
         </div>
-        <div className="flex-1 text-center pr-12">
+        <div className="flex-1 text-center pr-8">
           <span className="text-[13px] font-medium text-gray-600">Contract Consultant for Draper Associates</span>
         </div>
       </div>
@@ -68,15 +69,10 @@ const DraperWindow: React.FC<DraperWindowProps> = ({ onClose, onFocus, zIndex })
       />
 
       {/* The Text (Natural Flow) */}
-      <div style={{ padding: '40px', background: 'white' }}>
-        <div className="space-y-6 text-center">
-          <p className="text-[16px] text-[#1d1d1f] font-normal leading-[1.6] italic">
-            me pitching an investment memo to Tim Draper, founder of <a href="https://www.draper.vc/" target="_blank" rel="noopener noreferrer" className="text-[#007AFF] hover:underline font-bold">Draper Associates</a> known for his early-stage bets on Tesla, SpaceX, Skype, and Baidu
-          </p>
-          <p className="text-[18px] text-[#1d1d1f] font-bold leading-[1.6] italic">
-            I’d tell you the details, but then I’d have to kill you... (Standard NDA behavior)
-          </p>
-        </div>
+      <div style={{ padding: '24px 32px 28px', background: 'white' }}>
+        <p className="text-[16px] text-[#1d1d1f] font-normal leading-[1.6] italic text-center">
+          me pitching an investment memo to Tim Draper, founder of <a href="https://www.draper.vc/" target="_blank" rel="noopener noreferrer" className="text-[#007AFF] hover:underline font-bold">Draper Associates</a> known for his early-stage bets on Tesla, SpaceX, Skype, and Baidu
+        </p>
       </div>
     </motion.div>
   );

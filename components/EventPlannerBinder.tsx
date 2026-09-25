@@ -19,7 +19,7 @@ const Page: React.FC<PageProps & { isBack?: boolean; pageNumber: number; totalPa
   const renderContent = (text: string) => {
     // Smart Bolding logic
     const boldPhrases = [
-      "My boss asked me to plan a private AI networking night.",
+      "I interned for an ai agent startup, and my boss gave me one week to plan a private AI networking night he would fly in from SF for.",
       "managed the end-to-end logistics",
       "The concept",
       "two zones",
@@ -174,7 +174,7 @@ const EventPlannerBinder: React.FC<EventPlannerBinderProps> = ({ zIndex, onClose
   const pages: PageProps[] = [
     {
       title: "01: The Assignment",
-      content: "My boss asked me to plan a private AI networking night.\nThe goal: A high-impact, tactile experience for 20 investors and CEOs in LA.",
+      content: "I interned for an ai agent startup, and my boss gave me one week to plan a private AI networking night he would fly in from SF for.\nThe goal: A high-impact, tactile experience for 20 investors and CEOs in LA.",
       image: "https://i.imgur.com/Jq6Tdpe.png",
       caption: "This is the event layout mockup I pitched to my boss alongside a project brief; it resulted in a green light and a $3,000 budget to bring the concept to life."
     },

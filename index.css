@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Roboto+Mono:wght@400;500;700&family=Caveat:wght@400;700&family=Special+Elite&family=Homemade+Apple&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Roboto+Mono:wght@400;500;700&family=Caveat:wght@400;700&family=Special+Elite&family=Homemade+Apple&family=Manrope:wght@400;500;600;700&display=swap');
 @import "tailwindcss";
 
 @theme {
@@ -8,6 +8,7 @@
   --font-hand: "Caveat", cursive;
   --font-typewriter: "Special Elite", system-ui, serif;
   --font-script: "Homemade Apple", cursive;
+  --font-manrope: "Manrope", sans-serif;
 }
 
 @layer base {
