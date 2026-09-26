@@ -700,18 +700,18 @@ const SpotlightSearchHint: React.FC = () => {
       initial={{ y: -20, opacity: 0, scale: 0.98 }}
       animate={{ y: 0, opacity: 1, scale: 1 }}
       transition={{ delay: 0.35, duration: 0.7, type: "spring", stiffness: 260, damping: 22 }}
-      className="fixed top-7 left-1/2 -translate-x-1/2 z-[25] pointer-events-none select-none max-w-[92vw]"
+      className="fixed top-4 md:top-7 left-1/2 -translate-x-1/2 z-[25] pointer-events-none select-none max-w-[92vw]"
     >
-      <div className="h-[46px] px-4 rounded-[16px] bg-white/75 backdrop-blur-2xl border border-white/60 shadow-[0_16px_40px_rgba(0,0,0,0.12),0_1px_3px_rgba(0,0,0,0.06),inset_0_1px_1px_rgba(255,255,255,0.8)] inline-flex items-center gap-2.5 w-fit">
-        <Search size={18} className="text-[#1d1d1f]/45 flex-shrink-0" strokeWidth={2.2} />
+      <div className="h-[38px] md:h-[46px] px-3 md:px-4 rounded-[14px] md:rounded-[16px] bg-white/75 backdrop-blur-2xl border border-white/60 shadow-[0_16px_40px_rgba(0,0,0,0.12),0_1px_3px_rgba(0,0,0,0.06),inset_0_1px_1px_rgba(255,255,255,0.8)] inline-flex items-center gap-2 md:gap-2.5 w-fit">
+        <Search size={16} className="text-[#1d1d1f]/45 flex-shrink-0 md:w-[18px] md:h-[18px]" strokeWidth={2.2} />
         <div className="flex items-center">
-          <span className="text-[15px] text-[#1d1d1f] font-normal tracking-[-0.01em] whitespace-nowrap">
+          <span className="text-[13px] md:text-[15px] text-[#1d1d1f] font-normal tracking-[-0.01em] whitespace-nowrap">
             {displayedText}
           </span>
           <motion.span
             animate={{ opacity: [1, 0, 1] }}
             transition={{ repeat: Infinity, duration: 0.85, ease: "steps(2, start)" }}
-            className="inline-block w-[2px] h-[17px] bg-[#007AFF] ml-0.5 flex-shrink-0 rounded-full"
+            className="inline-block w-[2px] h-[14px] md:h-[17px] bg-[#007AFF] ml-0.5 flex-shrink-0 rounded-full"
           />
         </div>
       </div>
@@ -992,7 +992,7 @@ const App: React.FC = () => {
       <div className="absolute inset-0 z-[10] pointer-events-none">
         <SpotlightSearchHint />
 
-        <div className="absolute inset-0 z-[30] pointer-events-none">
+        <div className="mobile-desktop-container absolute inset-0 z-[30] pointer-events-auto md:pointer-events-none md:overflow-visible md:block md:p-0">
           {DESKTOP_ICONS.map((icon, index) => (
             <DesktopIcon
               key={icon.id}

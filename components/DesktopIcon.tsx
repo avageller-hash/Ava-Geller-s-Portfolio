@@ -1,5 +1,5 @@
 
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { iconSpring } from '../constants';
 
@@ -140,6 +140,15 @@ const DesktopIcon: React.FC<DesktopIconProps> = ({
 }) => {
   const isDragging = useRef(false);
   const [hasSettled, setHasSettled] = useState(false);
+  const [isMobile, setIsMobile] = useState(() => typeof window !== 'undefined' ? window.innerWidth < 768 : false);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   const handleLaunch = () => {
     if (isDragging.current) return;
@@ -178,7 +187,7 @@ const DesktopIcon: React.FC<DesktopIconProps> = ({
   return (
     <motion.div
       // Logic triggers
-      drag
+      drag={!isMobile}
       dragConstraints={containerRef}
       dragElastic={0}
       dragMomentum={false}
@@ -186,77 +195,94 @@ const DesktopIcon: React.FC<DesktopIconProps> = ({
       onDragEnd={handleDragEnd}
       onMouseDown={onFocus}
       onTap={handleLaunch}
+      onClick={handleLaunch}
       
       // Floating Entry Animation and Settled State
-      initial={{ 
-        left: `${trajectory.start.x}%`, 
-        top: `${trajectory.start.y}%`,
-        opacity: 0,
-        scale: 0.6,
-        rotate: trajectory.start.rotate,
-      }}
+      initial={
+        isMobile
+          ? { opacity: 0, scale: 0.9 }
+          : { 
+              left: `${trajectory.start.x}%`, 
+              top: `${trajectory.start.y}%`,
+              opacity: 0,
+              scale: 0.6,
+              rotate: trajectory.start.rotate,
+            }
+      }
       animate={
-        hasSettled
-          ? { 
-              left: `${x}%`, 
-              top: `${y}%`,
+        isMobile
+          ? {
               opacity: isDimmed ? 0.4 : 1,
               filter: isDimmed ? 'grayscale(0.5) blur(1px)' : 'grayscale(0) blur(0px)',
-              scale: isProminent ? 1.18 : 1,
+              scale: 1,
               rotate: 0,
               zIndex: zIndex
             }
-          : {
-              left: [
-                `${trajectory.start.x}%`,
-                `${trajectory.w1.x}%`,
-                `${trajectory.w2.x}%`,
-                `${trajectory.w3.x}%`,
-                `${x}%`
-              ],
-              top: [
-                `${trajectory.start.y}%`,
-                `${trajectory.w1.y}%`,
-                `${trajectory.w2.y}%`,
-                `${trajectory.w3.y}%`,
-                `${y}%`
-              ],
-              rotate: [
-                trajectory.start.rotate,
-                trajectory.w1.rotate,
-                trajectory.w2.rotate,
-                trajectory.w3.rotate,
-                0
-              ],
-              scale: [0.6, baseScale * 1.08, baseScale * 0.97, baseScale * 1.02, baseScale],
-              opacity: [0, 1, 1, 1, isDimmed ? 0.4 : 1],
-              zIndex: zIndex
-            }
+          : (hasSettled
+              ? { 
+                  left: `${x}%`, 
+                  top: `${y}%`,
+                  opacity: isDimmed ? 0.4 : 1,
+                  filter: isDimmed ? 'grayscale(0.5) blur(1px)' : 'grayscale(0) blur(0px)',
+                  scale: isProminent ? 1.18 : 1,
+                  rotate: 0,
+                  zIndex: zIndex
+                }
+              : {
+                  left: [
+                    `${trajectory.start.x}%`,
+                    `${trajectory.w1.x}%`,
+                    `${trajectory.w2.x}%`,
+                    `${trajectory.w3.x}%`,
+                    `${x}%`
+                  ],
+                  top: [
+                    `${trajectory.start.y}%`,
+                    `${trajectory.w1.y}%`,
+                    `${trajectory.w2.y}%`,
+                    `${trajectory.w3.y}%`,
+                    `${y}%`
+                  ],
+                  rotate: [
+                    trajectory.start.rotate,
+                    trajectory.w1.rotate,
+                    trajectory.w2.rotate,
+                    trajectory.w3.rotate,
+                    0
+                  ],
+                  scale: [0.6, baseScale * 1.08, baseScale * 0.97, baseScale * 1.02, baseScale],
+                  opacity: [0, 1, 1, 1, isDimmed ? 0.4 : 1],
+                  zIndex: zIndex
+                }
+            )
       }
       transition={
-        hasSettled
-          ? {
-              type: 'spring',
-              stiffness: 400,
-              damping: 25,
-              mass: 1
-            }
-          : {
-              duration: 2.5,
-              delay: 0.1 + (index * 0.14),
-              times: [0, 0.42, 0.68, 0.88, 1],
-              ease: "easeInOut"
-            }
+        isMobile
+          ? { delay: index * 0.04, duration: 0.3 }
+          : (hasSettled
+              ? {
+                  type: 'spring',
+                  stiffness: 400,
+                  damping: 25,
+                  mass: 1
+                }
+              : {
+                  duration: 2.5,
+                  delay: 0.1 + (index * 0.14),
+                  times: [0, 0.42, 0.68, 0.88, 1],
+                  ease: "easeInOut"
+                }
+            )
       }
       onAnimationComplete={() => {
         if (!hasSettled) {
           setHasSettled(true);
         }
       }}
-      whileHover="hovered"
+      whileHover={isMobile ? undefined : "hovered"}
       
       // Variants for the Parent
-      variants={{
+      variants={isMobile ? undefined : {
         hovered: { 
           scale: isProminent ? 1.23 : 1.05,
           zIndex: 4000 
@@ -265,7 +291,7 @@ const DesktopIcon: React.FC<DesktopIconProps> = ({
       
       // Interaction Styles
       whileTap={{ scale: 0.95 }}
-      whileDrag={{ 
+      whileDrag={isMobile ? undefined : { 
         scale: isProminent ? 1.25 : 1.1, 
         zIndex: 5000, 
         cursor: 'grabbing',
@@ -273,13 +299,20 @@ const DesktopIcon: React.FC<DesktopIconProps> = ({
         filter: 'grayscale(0) blur(0px)'
       }}
       
-      style={{ 
-        translateX: '-50%',
-        translateY: '-50%',
-        position: 'absolute',
-        touchAction: 'none'
-      }}
-      className="flex flex-col items-center gap-3 cursor-pointer select-none group pointer-events-auto transition-opacity duration-500"
+      style={
+        isMobile
+          ? { 
+              position: 'relative',
+              touchAction: 'manipulation'
+            }
+          : { 
+              translateX: '-50%',
+              translateY: '-50%',
+              position: 'absolute',
+              touchAction: 'none'
+            }
+      }
+      className="mobile-desktop-icon flex flex-col items-center gap-2.5 md:gap-3 cursor-pointer select-none group pointer-events-auto transition-opacity duration-500"
     >
       {/* Icon Container */}
       <div 

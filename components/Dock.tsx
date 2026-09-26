@@ -178,15 +178,14 @@ const DockIconItem: React.FC<DockIconItemProps> = ({ title, children, isActive, 
   };
 
   return (
-    <div className="flex flex-col items-center justify-end h-full pb-2">
+    <div className="flex flex-col items-center justify-end h-full pb-1.5 md:pb-2 flex-shrink-0">
       <motion.div
-        style={{ width: iconSize, height: iconSize, y: isBouncing ? -15 : 0 }}
-        onClick={handleIconClick}
         animate={isBouncing ? {
-          y: [-15, 0, -8, 0],
+          y: [-14, 0, -7, 0],
           transition: { duration: 0.6, times: [0, 0.4, 0.7, 1] }
         } : { y: 0 }}
-        className="flex items-center justify-center relative group cursor-pointer"
+        onClick={handleIconClick}
+        className="mobile-dock-item w-[42px] h-[42px] md:w-[54px] md:h-[54px] flex items-center justify-center relative group cursor-pointer"
       >
         <div className="w-full h-full flex items-center justify-center pointer-events-none drop-shadow-[0_2px_5px_rgba(0,0,0,0.15)]">
           {children}
@@ -244,19 +243,19 @@ const Dock: React.FC<DockProps> = ({ onOpen, openIds }) => {
   ];
 
   return (
-    <div className="fixed bottom-3 left-0 right-0 flex justify-center items-center pointer-events-none z-[9999]">
+    <div className="fixed bottom-2 md:bottom-3 left-0 right-0 flex justify-center items-center pointer-events-none z-[9999] px-2 md:px-0">
       <motion.div 
         initial={{ y: 100 }}
         animate={{ y: 0 }}
-        className="pointer-events-auto"
+        className="pointer-events-auto mobile-dock-wrapper max-w-full"
       >
         <motion.div 
-          className="px-3 flex gap-1 items-end h-[74px] rounded-[24px] bg-white/10 backdrop-blur-3xl border border-white/20 shadow-[0_20px_50px_-10px_rgba(0,0,0,0.2)]"
+          className="mobile-dock-container px-2 md:px-3 flex gap-1 md:gap-1.5 items-end h-[62px] md:h-[74px] rounded-[20px] md:rounded-[24px] bg-white/10 backdrop-blur-3xl border border-white/20 shadow-[0_20px_50px_-10px_rgba(0,0,0,0.2)] max-w-[96vw] overflow-x-auto no-scrollbar"
         >
           {DOCK_ITEMS.map((item) => {
             if (item.type === 'divider') {
               return (
-                <div key={item.id} className="w-[1px] h-[55%] bg-black/5 mx-1 mb-[18px]" style={{ alignSelf: 'center' }} />
+                <div key={item.id} className="w-[1px] h-[50%] md:h-[55%] bg-black/5 mx-0.5 md:mx-1 mb-[13px] md:mb-[18px] flex-shrink-0" style={{ alignSelf: 'center' }} />
               );
             }
             const appItem = item as DockAppItem;
